@@ -11,12 +11,32 @@ Ally::Ally() {
 }
 
 void Ally::update(float dt) {
+    float closestDistance = INFINITY;
+
+    Game* game = getGame();
+    if (game) {
+        for (Entity* entity : game->getEntities()) {
+            if (!entity || entity->IsAllied()) continue;
+
+            sf::Vector2f dist = entity->getPosition() - getPosition();
+            float currentDistance = std::hypot(dist.x, dist.y);
+
+            if (currentDistance < closestDistance) {
+                closestDistance = currentDistance;
+                target = entity;
+            }
+        }
+    }
+
     Entity::update(dt);
+}
+Entity* Ally::getTarget() const {
+    return target;
 }
 
 Peasant::Peasant() {
     setSprite("../Resources/Peasant.jpg");
-    setPosition({700.f, 700.f});
+    setPosition({400.f, 100.f});
     setAcceleration(0.6);
     setVelocity(0.6);
     setTargetPosition({500.f, 500.f});
@@ -26,20 +46,14 @@ Peasant::Peasant() {
 }
 
 void Peasant::update(float dt) {
-    float dis = INFINITY;
-    Entity* target_entity = nullptr;
-    for (Entity* entity : getGame()->getEntities()) {
-        sf::Vector2f distance = getGame()->getPlayer()->getPosition() - getPosition();
-        float check = std::sqrt(distance.x * distance.x + distance.y * distance.y);
-        if (check < dis) {
-            dis = check;
-            target_entity = entity;
-        }
-    }
-    setTargetPosition(target_entity->getPosition());
+    Ally::update(dt);
+    if (!getTarget()) return;
+    setTargetPosition(getTarget()->getPosition());
 
     float meleeRange = 75.f; // adjust to your zombie reach
     // Handle melee attack
+    sf::Vector2f dist = getTarget()->getPosition() - getPosition();
+    float dis = std::hypot(dist.x, dist.y);
     if (dis <= meleeRange && getCD_timer() <= 0) {
         setCD_timer(getCD()); // reset cooldown
 
@@ -53,10 +67,8 @@ void Peasant::update(float dt) {
             20.f,
             "../Resources/Arrow.png"
         );
-        meleeHit->setIfAllied(false);
+        meleeHit->setIfAllied(true);
 
         getGame()->addProjectile(meleeHit);
     }
-
-    Ally::update(dt);
 }

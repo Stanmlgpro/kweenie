@@ -10,6 +10,32 @@ Enemy::Enemy() {
 }
 
 void Enemy::update(float dt) {
+    float closestDistance = INFINITY;
+
+    Game* game = getGame();
+    if (game) {
+        // First check player as potential target
+        Entity* player = game->getPlayer();
+        if (player && player->IsAllied()) {
+            sf::Vector2f dist = player->getPosition() - getPosition();
+            closestDistance = std::hypot(dist.x, dist.y);
+            target = player;
+        }
+
+        // Check other entities
+        for (Entity* entity : game->getEntities()) {
+            if (!entity || !entity->IsAllied() || entity == player) continue;
+
+            sf::Vector2f dist = entity->getPosition() - getPosition();
+            float currentDistance = std::hypot(dist.x, dist.y);
+
+            if (currentDistance < closestDistance) {
+                closestDistance = currentDistance;
+                target = entity;
+            }
+        }
+    }
+
     Entity::update(dt);
 }
 Entity* Enemy::getTarget() const {
@@ -28,27 +54,20 @@ Zombie::Zombie() {
 }
 
 void Zombie::update(float dt) {
-    float dis = INFINITY;
-    Entity* target_entity = nullptr;
-    for (Entity* entity : getGame()->getEntities()) {
-
-        sf::Vector2f distance = getGame()->getPlayer()->getPosition() - getPosition();
-        float check = std::sqrt(distance.x * distance.x + distance.y * distance.y);
-        if (check < dis) {
-            dis = check;
-            target_entity = entity;
-        }
-    }
-    setTargetPosition(target_entity->getPosition());
+    Enemy::update(dt);
+    if (!getTarget()) return;
+    setTargetPosition(getTarget()->getPosition());
 
     float meleeRange = 75.f; // adjust to your zombie reach
     // Handle melee attack
+    sf::Vector2f dist = getTarget()->getPosition() - getPosition();
+    float dis = std::hypot(dist.x, dist.y);
     if (dis <= meleeRange && getCD_timer() <= 0) {
         setCD_timer(getCD()); // reset cooldown
 
         // Create a "melee projectile" at zombie's position
         auto meleeHit = new Projectile(
-            getPosition(),    
+            getPosition(),
             {1.f, 0.f},
             0.f,
             0.2f,
@@ -60,6 +79,4 @@ void Zombie::update(float dt) {
 
         getGame()->addProjectile(meleeHit);
     }
-
-    Enemy::update(dt);
 }

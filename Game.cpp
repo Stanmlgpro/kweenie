@@ -1,12 +1,14 @@
 #include "Game.h"
 
+#include "Ally.h"
 #include "Enemy.h"
 
 Game::Game() {
     Archer* archer = new Archer();
     this->player = archer;
     Zombie* zombie = new Zombie();
-    this->entities = {player, zombie};
+    Peasant* peasant = new Peasant();
+    this->entities = {player, zombie, peasant};
 }
 
 void Game::update() {

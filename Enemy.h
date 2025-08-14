@@ -15,7 +15,7 @@ public:
     Entity* getTarget() const;
 
 private:
-    Entity* target;
+    Entity* target = nullptr;
 };
 
 class Zombie : public Enemy {

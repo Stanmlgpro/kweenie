@@ -12,6 +12,10 @@ public:
     Ally();
 
     void update(float dt) override;
+    Entity* getTarget() const;
+
+private:
+    Entity* target = nullptr;
 };
 
 class Peasant : public Ally {
