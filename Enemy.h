@@ -17,6 +17,8 @@ public:
 class Zombie : public Enemy {
 public:
     Zombie();
+
+    void update(float dt) override;
 };
 
 #endif //ENEMY_H

@@ -9,6 +9,7 @@
 #include <iostream>
 #include <cmath>
 
+class Game;
 class Entity {
 private:
     sf::Vector2f targetPosition;
@@ -25,6 +26,10 @@ private:
     bool flipped = false;
     bool dead = false;
     bool allied = true;
+    float CD = 0;
+    float CD_timer = 0;
+
+    Game* game;
 public:
     Entity() = default;
 
@@ -41,6 +46,9 @@ public:
     bool isFlipped();
     bool isDead();
     bool IsAllied() const { return allied; }
+    Game* getGame() const { return game; }
+    float getCD() const { return CD; }
+    float getCD_timer() const { return CD_timer; }
 
     void setVelocity(float velocity);
     void setAcceleration(float acceleration);
@@ -51,6 +59,9 @@ public:
     void setDeath(bool death) { this->dead = death; }
     void setFlipped(bool flipped);
     void setIfAllied(bool allied) { this->allied = allied; }
+    void setGame(Game* game) {this->game = game; }
+    void setCD(float CD) {this->CD = CD; }
+    void setCD_timer(float CD_timer) {this->CD_timer = CD_timer; }
 
     virtual void update(float dt);
 

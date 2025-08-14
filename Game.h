@@ -10,12 +10,12 @@
 #include "GameRenderer.h"
 #include "GUI.h"
 #include "uiButton.h"
-#include "Entity.h"
 #include "Player.h"
 #include "Projectile.h"
 #include <cmath>
 
 class Entity;
+class Player;
 class GameRenderer;
 class GUI;
 class Game {

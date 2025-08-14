@@ -3,38 +3,34 @@
 //
 
 #include "Entity.h"
+#include "Game.h"
 
 void Entity::update(float dt) {
-    // Compute direction vector
-    sf::Vector2f dir = targetPosition - position;
+    float dt_ = dt / 180;
+    CD_timer -= dt_;
+    if (CD_timer < 0) CD_timer = 0;
+    sf::Vector2f direction = targetPosition - position;
 
-    // Compute distance to target
-    float distance = std::sqrt(dir.x * dir.x + dir.y * dir.y);
+    float distance = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
-    if (distance > 0.0f) {
-        // Normalize direction
-        dir /= distance;
+    if (distance == 0.f) return;
 
-        // Update velocity with acceleration
-        velocity += acceleration * dt;
+    sf::Vector2f directionNormalized = direction / distance;
 
-        // Move position
-        position += dir * velocity * dt;
+    sf::Vector2f movement = directionNormalized * velocity * dt;
 
-        // Update sprite position
-        sprite.setPosition(position);
-
-        // Flip sprite based on horizontal direction
-        if (dir.x < 0 && !flipped) {
-            sprite.setScale(-1.f, 1.f);
-            flipped = true;
-        } else if (dir.x > 0 && flipped) {
-            sprite.setScale(1.f, 1.f);
-            flipped = false;
-        }
+    if (std::sqrt(movement.x * movement.x + movement.y * movement.y) > distance) {
+        position = targetPosition;
     } else {
-        // Reached target, stop moving
-        velocity = 0;
+        position += movement;
+    }
+
+    if (direction.x < 0 && !flipped) {
+        flip();
+        flipped = true;
+    } else if (direction.x > 0 && flipped) {
+        flip();
+        flipped = false;
     }
 }
 
@@ -57,7 +53,6 @@ void Entity::setSprite(const std::string& img_path) {
 }
 
 void Entity::flip() {
-    sprite.setPosition(position.x, position.y);
     sf::Vector2u size = this->texture.getSize();
     float scaleX = 100.0f / size.x;
     float scaleY = 100.0f / size.y;
