@@ -72,3 +72,26 @@ void Peasant::update(float dt) {
         getGame()->addProjectile(meleeHit);
     }
 }
+
+Barn::Barn() {
+    setSprite("../Resources/Barn.jpg");
+    setPosition({100.f, 50.f});
+    setAcceleration(0);
+    setVelocity(0);
+    setTargetPosition({0.f, 0.f});
+    setHitboxRadius(15);
+    setHp(100);
+    setCD(3.5);
+}
+
+void Barn::update(float dt) {
+    Ally::update(dt);
+
+    if (getCD_timer() <= 0) {
+        setCD_timer(getCD());
+
+        auto zombie = new Peasant();
+        zombie->setPosition(getPosition());
+        getGame()->addEntity(zombie);
+    }
+}

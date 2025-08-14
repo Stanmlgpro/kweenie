@@ -25,4 +25,10 @@ public:
     void update(float dt) override;
 };
 
+class Barn : public Ally {
+public:
+    Barn();
+
+    void update(float dt) override;
+};
 #endif //ALLY_H

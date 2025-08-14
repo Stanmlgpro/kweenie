@@ -6,9 +6,12 @@
 Game::Game() {
     Archer* archer = new Archer();
     this->player = archer;
-    Tombstone* tombstone = new Tombstone();
-    Peasant* peasant = new Peasant();
-    this->entities = {player, tombstone, peasant};
+    Tombstone* tombstone1 = new Tombstone();
+    tombstone1->setPosition({300.f, 300.f});
+    Tombstone* tombstone2 = new Tombstone();
+    tombstone2->setPosition({900.f, 220.f});
+    Barn* barn = new Barn();
+    this->entities = {player, tombstone1, tombstone2, barn};
 }
 
 void Game::update() {
