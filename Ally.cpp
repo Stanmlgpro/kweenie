@@ -1,23 +1,21 @@
 //
-// Created by stan1 on 13/08/2025.
+// Created by stan1 on 15/08/2025.
 //
 
-#include "Enemy.h"
+#include "Ally.h"
+#include "Projectile.h"
 #include "Game.h"
 
-Enemy::Enemy() {
-    setIfAllied(false);
+Ally::Ally() {
+    setIfAllied(true);
 }
 
-void Enemy::update(float dt) {
+void Ally::update(float dt) {
     Entity::update(dt);
 }
-Entity* Enemy::getTarget() const {
-    return target;
-}
 
-Zombie::Zombie() {
-    setSprite("../Resources/Zombie.png");
+Peasant::Peasant() {
+    setSprite("../Resources/Peasant.jpg");
     setPosition({700.f, 700.f});
     setAcceleration(0.6);
     setVelocity(0.6);
@@ -27,11 +25,10 @@ Zombie::Zombie() {
     setCD(1);
 }
 
-void Zombie::update(float dt) {
+void Peasant::update(float dt) {
     float dis = INFINITY;
     Entity* target_entity = nullptr;
     for (Entity* entity : getGame()->getEntities()) {
-
         sf::Vector2f distance = getGame()->getPlayer()->getPosition() - getPosition();
         float check = std::sqrt(distance.x * distance.x + distance.y * distance.y);
         if (check < dis) {
@@ -48,7 +45,7 @@ void Zombie::update(float dt) {
 
         // Create a "melee projectile" at zombie's position
         auto meleeHit = new Projectile(
-            getPosition(),    
+            getPosition(),
             {1.f, 0.f},
             0.f,
             0.2f,
@@ -61,5 +58,5 @@ void Zombie::update(float dt) {
         getGame()->addProjectile(meleeHit);
     }
 
-    Enemy::update(dt);
+    Ally::update(dt);
 }

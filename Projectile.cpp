@@ -4,7 +4,7 @@
 
 #include "Projectile.h"
 
-Projectile::Projectile(sf::Vector2f startPos, sf::Vector2f direction, float spd, float life, float size, float damage) : position(startPos), speed(spd), lifetime(life), radius(size), damage(damage) {
+Projectile::Projectile(sf::Vector2f startPos, sf::Vector2f direction, float spd, float life, float size, float damage, std::string texturePath) : position(startPos), speed(spd), lifetime(life), radius(size), damage(damage) {
     float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
     if (length != 0) direction /= length;
 
@@ -14,10 +14,28 @@ Projectile::Projectile(sf::Vector2f startPos, sf::Vector2f direction, float spd,
     shape.setFillColor(sf::Color::Red);
     shape.setOrigin(radius, radius);
     shape.setPosition(position);
+
+    setSprite(texturePath);
+}
+
+void Projectile::setSprite(const std::string& img_path) {
+    if (!this->texture.loadFromFile(img_path)) {
+        std::cerr << "Failed to load texture" << std::endl;
+    }
+    this->sprite.setTexture(this->texture);
+    sf::Vector2u size = this->texture.getSize();
+    sf::FloatRect bounds = sprite.getLocalBounds();
+    sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+    float scaleX = 100.0f / size.x;
+    float scaleY = 100.0f / size.y;
+    this->sprite.setScale(scaleX, scaleY);
+    float angle = std::atan2(velocity.y, velocity.x) * 180.f / M_PI;
+    sprite.setRotation(angle);
 }
 
 void Projectile::render(sf::RenderWindow* window) {
-    window->draw(shape);
+    sprite.setPosition(position.x, position.y);
+    window->draw(sprite);
 }
 
 bool Projectile::update(float dt) {

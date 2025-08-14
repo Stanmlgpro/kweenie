@@ -22,7 +22,6 @@ void Game::update() {
             float dist = std::sqrt(std::pow((projectiles[i]->getPosition().x - entity->getPosition().x), 2) + std::pow((projectiles[i]->getPosition().y- entity->getPosition().y), 2));
             if (dist < projectiles[i]->getRadius() + entity->getHitboxRadius()) {
                 entity->setHp(entity->getHp() - projectiles[i]->getDamage());
-                if (entity == player) std::cout << "player hit" << std::endl;
                 expired = true;
                 break;
             }
@@ -37,8 +36,8 @@ void Game::update() {
     entities.erase(
     std::remove_if(entities.begin(), entities.end(),
         [&](Entity* e) {
-            if (e == player) return false;
             if (e->isDead()) {
+                if (e == player) getGameRenderer()->getWindow()->close();
                 delete e;
                 return true;
             }
@@ -75,10 +74,7 @@ Player* Game::getPlayer() {
 }
 
 void Game::addProjectile(Projectile* projectile) {
-    if (projectile) {
-        this->projectiles.push_back(projectile);
-        std::cout << "projectile added" << std::endl;
-    }
+    if (projectile) this->projectiles.push_back(projectile);
 }
 
 Game::~Game() {

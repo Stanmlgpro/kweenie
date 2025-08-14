@@ -93,7 +93,7 @@ Archer::Archer() {
 Projectile* Archer::Q(sf::Vector2f mousePos) {
     if (getQ_time() <= 0) {
         setQ_time(getQ_CD());
-        Projectile* projectile = new Projectile(getPosition(),mousePos - getPosition(), 2, 200, 20, 10);
+        Projectile* projectile = new Projectile(getPosition(),mousePos - getPosition(), 4, 200, 20, 10, "../Resources/Arrow.png");
         setTargetPosition(getPosition());
         return projectile;
     }
@@ -102,7 +102,7 @@ Projectile* Archer::Q(sf::Vector2f mousePos) {
 Projectile* Archer::W(sf::Vector2f mousePos) {
     if (getW_time() <= 0) {
         setW_time(getW_CD());
-        Projectile* projectile = new Projectile(getPosition(),mousePos - getPosition(), 2, 200, 20, 10);
+        Projectile* projectile = new Projectile(getPosition(),mousePos - getPosition(), 2, 200, 20, 10, "../Resources/Arrow.png");
         setTargetPosition(getPosition());
         return projectile;
     }
@@ -127,7 +127,7 @@ Projectile* Archer::E(sf::Vector2f mousePos) {
 Projectile* Archer::R(sf::Vector2f mousePos) {
     if (getR_time() <= 0) {
         setR_time(getR_CD());
-        Projectile* projectile = new Projectile(getPosition(),mousePos - getPosition(), 2, 200, 20, 10);
+        Projectile* projectile = new Projectile(getPosition(),mousePos - getPosition(), 2, 200, 20, 10, "../Resources/Arrow.png");
         setTargetPosition(getPosition());
         return projectile;
     }

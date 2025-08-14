@@ -4,6 +4,8 @@
 
 #include "GUI.h"
 
+#include "Enemy.h"
+
 GUI::GUI(Game* game) {
     this->game = game;
 
@@ -85,7 +87,7 @@ GUI::GUI(Game* game) {
     x = 470;
     y = game->getGameRenderer()->getWindow()->getSize().y - buttonHeight - 35;
 
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < getGame()->getEntities().size() + 4; i++) {
 
         sf::Text text;
         text.setFont(font);
@@ -147,15 +149,29 @@ Game* GUI::getGame() {
 
 void GUI::render() {
     updateText();
+
+    auto* window = this->game->getGameRenderer()->getWindow();
+
+    // --- Draw GUI buttons in GUI view ---
+    window->setView(this->game->getGameRenderer()->getGUIView());
     std::vector<uiButton> stateButtons = buttons[renderState];
     for (uiButton& button : stateButtons) {
-        this->game->getGameRenderer()->getWindow()->draw(button.getShape());
-        this->game->getGameRenderer()->getWindow()->draw(button.getLabel());
+        window->draw(button.getShape());
+        window->draw(button.getLabel());
     }
-    for (sf::Text& text : text) {
-        this->game->getGameRenderer()->getWindow()->draw(text);
+
+    // Draw cooldown texts (assume text[0..3] are cooldowns)
+    for (int i = 0; i < 4; i++) {
+        window->draw(text[i]);
+    }
+
+    // --- Draw HP texts in WORLD view ---
+    window->setView(this->game->getGameRenderer()->getView());
+    for (int i = 4; i < text.size(); i++) {
+        window->draw(text[i]);
     }
 }
+
 void GUI::setState(RenderState renderstate) {
     previousState = renderState;
     renderState = renderstate;
@@ -192,4 +208,24 @@ void GUI::updateText() {
     updateOne(text[1], this->game->getPlayer()->getW_time());
     updateOne(text[2], this->game->getPlayer()->getE_time());
     updateOne(text[3], this->game->getPlayer()->getR_time());
+
+    text.resize(4);
+    for (auto entity : getGame()->getEntities()) {
+        sf::Text hpText;
+        hpText.setFont(font); // set your font
+        hpText.setCharacterSize(25); // example size
+        hpText.setFillColor(sf::Color::Red);
+        if (entity->IsAllied()) hpText.setFillColor(sf::Color::Blue);
+
+        float hp = entity->getHp();
+        hpText.setString(std::to_string(static_cast<int>(hp)));
+
+        sf::FloatRect bounds = hpText.getLocalBounds();
+        hpText.setOrigin(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f);
+
+        sf::Vector2f entityPos = entity->getPosition();
+        hpText.setPosition(entityPos.x, entityPos.y - 50.f);
+
+        text.push_back(hpText);
+    }
 }

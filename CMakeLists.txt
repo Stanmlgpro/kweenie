@@ -27,6 +27,8 @@ set(SOURCE_FILES
         Projectile.cpp
         Enemy.h
         Enemy.cpp
+        Ally.h
+        Ally.cpp
 )
 add_executable(project ${SOURCE_FILES})
 target_link_libraries(project sfml-graphics sfml-window sfml-system)

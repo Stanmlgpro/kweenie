@@ -26,9 +26,10 @@ private:
 
     bool allied = true;
 public:
-    Projectile(sf::Vector2f startPos, sf::Vector2f direction, float spd, float life, float size, float damage);
+    Projectile(sf::Vector2f startPos, sf::Vector2f direction, float spd, float life, float size, float damage, std::string texturePath);
 
     bool update(float dt);
+    void setSprite(const std::string& img_path);
     void render(sf::RenderWindow* window);
 
     sf::Vector2f getPosition() const { return position; }
