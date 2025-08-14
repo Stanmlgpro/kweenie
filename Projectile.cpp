@@ -28,6 +28,8 @@ void Projectile::setSprite(const std::string& img_path) {
     sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
     float scaleX = 100.0f / size.x;
     float scaleY = 100.0f / size.y;
+    scaleX *= std::sqrt(shape.getRadius())/5;
+    scaleY *= std::sqrt(shape.getRadius())/5;
     this->sprite.setScale(scaleX, scaleY);
     float angle = std::atan2(velocity.y, velocity.x) * 180.f / M_PI;
     sprite.setRotation(angle);

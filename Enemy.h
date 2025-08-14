@@ -25,4 +25,10 @@ public:
     void update(float dt) override;
 };
 
+class Tombstone : public Enemy {
+public:
+    Tombstone();
+
+    void update(float dt) override;
+};
 #endif //ENEMY_H

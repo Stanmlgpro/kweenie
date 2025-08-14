@@ -80,3 +80,27 @@ void Zombie::update(float dt) {
         getGame()->addProjectile(meleeHit);
     }
 }
+
+Tombstone::Tombstone() {
+    setSprite("../Resources/Tombstone.jpg");
+    setPosition({300.f, 300.f});
+    setAcceleration(0);
+    setVelocity(0);
+    setTargetPosition({0.f, 0.f});
+    setHitboxRadius(15);
+    setHp(100);
+    setCD(2);
+}
+
+void Tombstone::update(float dt) {
+    Enemy::update(dt);
+
+    if (getCD_timer() <= 0) {
+        setCD_timer(getCD());
+
+        auto zombie = new Zombie();
+        zombie->setPosition(getPosition());
+        getGame()->addEntity(zombie);
+    }
+}
+

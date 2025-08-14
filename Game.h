@@ -30,6 +30,7 @@ public:
     void setGameRenderer(GameRenderer* gameRenderer);
     void setGUI(GUI* gui);
     void addProjectile(Projectile* projectile);
+    void addEntity(Entity* entity);
 
     std::vector<Entity*> getEntities();
     std::vector<Projectile*> getProjectiles();

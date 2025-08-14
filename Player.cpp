@@ -81,13 +81,13 @@ Archer::Archer() {
     setHitboxRadius(10);
     setHp(100);
     setQ_CD(0.5);
-    setQ_time(0.5);
+    setQ_time(0);
     setW_CD(3);
-    setW_time(3);
+    setW_time(0);
     setE_CD(6);
-    setE_time(6);
+    setE_time(0);
     setR_CD(30);
-    setR_time(30);
+    setR_time(0);
 }
 
 Projectile* Archer::Q(sf::Vector2f mousePos) {
@@ -127,7 +127,7 @@ Projectile* Archer::E(sf::Vector2f mousePos) {
 Projectile* Archer::R(sf::Vector2f mousePos) {
     if (getR_time() <= 0) {
         setR_time(getR_CD());
-        Projectile* projectile = new Projectile(getPosition(),mousePos - getPosition(), 2, 200, 20, 10, "../Resources/Arrow.png");
+        Projectile* projectile = new Projectile(getPosition(),mousePos - getPosition(), 5, 500, 200, 50, "../Resources/Big_arrow.jpg");
         setTargetPosition(getPosition());
         return projectile;
     }

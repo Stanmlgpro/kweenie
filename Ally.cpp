@@ -41,8 +41,8 @@ Peasant::Peasant() {
     setVelocity(0.6);
     setTargetPosition({500.f, 500.f});
     setHitboxRadius(10);
-    setHp(40);
-    setCD(1);
+    setHp(65);
+    setCD(0.7);
 }
 
 void Peasant::update(float dt) {

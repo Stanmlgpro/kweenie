@@ -6,9 +6,9 @@
 Game::Game() {
     Archer* archer = new Archer();
     this->player = archer;
-    Zombie* zombie = new Zombie();
+    Tombstone* tombstone = new Tombstone();
     Peasant* peasant = new Peasant();
-    this->entities = {player, zombie, peasant};
+    this->entities = {player, tombstone, peasant};
 }
 
 void Game::update() {
@@ -77,6 +77,9 @@ Player* Game::getPlayer() {
 
 void Game::addProjectile(Projectile* projectile) {
     if (projectile) this->projectiles.push_back(projectile);
+}
+void Game::addEntity(Entity* entity) {
+    if (entity) this->entities.push_back(entity);
 }
 
 Game::~Game() {
