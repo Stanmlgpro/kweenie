@@ -44,23 +44,30 @@ void Entity::setSprite(const std::string& img_path) {
         std::cerr << "Failed to load texture" << std::endl;
     }
     this->sprite.setTexture(this->texture);
-    sf::Vector2u size = this->texture.getSize();
+
     sf::FloatRect bounds = sprite.getLocalBounds();
     sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
-    float scaleX = 100.0f / size.x;
-    float scaleY = 100.0f / size.y;
-    this->sprite.setScale(scaleX, scaleY);
+
+    float radius = getHitboxRadius(); // your function
+    sf::Vector2u texSize = this->texture.getSize();
+
+    float scaleX = (radius * 2.f) / static_cast<float>(texSize.x);
+    float scaleY = (radius * 2.f) / static_cast<float>(texSize.y);
+    sprite.setScale(scaleX, scaleY);
 }
 
 void Entity::flip() {
-    sf::Vector2u size = this->texture.getSize();
-    float scaleX = 100.0f / size.x;
-    float scaleY = 100.0f / size.y;
+    sf::Vector2u texSize = this->texture.getSize();
+    float radius = getHitboxRadius();
+
+    float scaleX = (radius * 2.f) / static_cast<float>(texSize.x);
+    float scaleY = (radius * 2.f) / static_cast<float>(texSize.y);
+
     if (flipped) {
         this->sprite.setScale(scaleX, scaleY);
-        return;
+    } else {
+        this->sprite.setScale(-scaleX, scaleY);
     }
-    this->sprite.setScale(-scaleX, scaleY);
 }
 
 float Entity::getAcceleration() {

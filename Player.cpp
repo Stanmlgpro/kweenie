@@ -79,14 +79,13 @@ Projectile* Player::died() {
 }
 
 Archer::Archer() {
-    setSprite("../Resources/Archer.png");
     setPosition({500.f, 500.f});
     setAcceleration(1);
     setVelocity(1);
     setTargetPosition({500.f, 500.f});
-    setHitboxRadius(10);
+    setHitboxRadius(50);
     setHp(100);
-    setQ_CD(0.5);
+    setQ_CD(0.25);
     setQ_time(0);
     setW_CD(3);
     setW_time(0);
@@ -94,12 +93,13 @@ Archer::Archer() {
     setE_time(0);
     setR_CD(30);
     setR_time(0);
+    setSprite("../Resources/Archer.png");
 }
 
 Projectile* Archer::Q(sf::Vector2f mousePos) {
     if (getQ_time() <= 0) {
         setQ_time(getQ_CD());
-        Projectile* projectile = new Projectile(getPosition(),mousePos - getPosition(), 4, 200, 20, 10, "../Resources/Arrow.png");
+        Projectile* projectile = new Projectile(getPosition(),mousePos - getPosition(), 4, 200, 30, 10, "../Resources/Arrow.png");
         setTargetPosition(getPosition());
         return projectile;
     }

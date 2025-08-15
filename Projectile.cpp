@@ -23,14 +23,18 @@ void Projectile::setSprite(const std::string& img_path) {
         std::cerr << "Failed to load texture" << std::endl;
     }
     this->sprite.setTexture(this->texture);
-    sf::Vector2u size = this->texture.getSize();
+
+    // Center the sprite
     sf::FloatRect bounds = sprite.getLocalBounds();
     sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
-    float scaleX = 100.0f / size.x;
-    float scaleY = 100.0f / size.y;
-    scaleX *= std::sqrt(shape.getRadius())/5;
-    scaleY *= std::sqrt(shape.getRadius())/5;
-    this->sprite.setScale(scaleX, scaleY);
+
+    float radius = shape.getRadius();
+
+    sf::Vector2u texSize = this->texture.getSize();
+    float scaleFactor = (radius * 2.f) / static_cast<float>(texSize.x);
+    sprite.setScale(scaleFactor, scaleFactor);
+
+    // Rotate according to velocity direction
     float angle = std::atan2(velocity.y, velocity.x) * 180.f / M_PI;
     sprite.setRotation(angle);
 }

@@ -43,14 +43,14 @@ Entity* Enemy::getTarget() const {
 }
 
 Zombie::Zombie() {
-    setSprite("../Resources/Zombie.png");
     setPosition({700.f, 700.f});
     setAcceleration(0.6);
     setVelocity(0.6);
     setTargetPosition({500.f, 500.f});
-    setHitboxRadius(10);
+    setHitboxRadius(50);
     setHp(40);
     setCD(1);
+    setSprite("../Resources/Zombie.png");
 }
 
 void Zombie::update(float dt) {
@@ -87,14 +87,14 @@ Projectile* Zombie::died() {
 }
 
 Tombstone::Tombstone() {
-    setSprite("../Resources/Tombstone.png");
     setPosition({300.f, 300.f});
     setAcceleration(0);
     setVelocity(0);
     setTargetPosition({0.f, 0.f});
-    setHitboxRadius(15);
+    setHitboxRadius(120);
     setHp(100);
     setCD(2);
+    setSprite("../Resources/Tombstone.png");
 }
 
 void Tombstone::update(float dt) {

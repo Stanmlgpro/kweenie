@@ -35,14 +35,14 @@ Entity* Ally::getTarget() const {
 }
 
 Peasant::Peasant() {
-    setSprite("../Resources/Peasant.png");
     setPosition({400.f, 100.f});
     setAcceleration(0.6);
     setVelocity(0.6);
     setTargetPosition({500.f, 500.f});
-    setHitboxRadius(10);
+    setHitboxRadius(50);
     setHp(65);
     setCD(0.7);
+    setSprite("../Resources/Peasant.png");
 }
 
 void Peasant::update(float dt) {
@@ -78,14 +78,14 @@ Projectile* Peasant::died() {
 }
 
 Barn::Barn() {
-    setSprite("../Resources/Barn.png");
     setPosition({100.f, 50.f});
     setAcceleration(0);
     setVelocity(0);
     setTargetPosition({0.f, 0.f});
-    setHitboxRadius(15);
-    setHp(100);
+    setHitboxRadius(120);
+    setHp(250);
     setCD(3.5);
+    setSprite("../Resources/Barn.png");
 }
 
 void Barn::update(float dt) {
