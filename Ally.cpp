@@ -35,7 +35,7 @@ Entity* Ally::getTarget() const {
 }
 
 Peasant::Peasant() {
-    setSprite("../Resources/Peasant.jpg");
+    setSprite("../Resources/Peasant.png");
     setPosition({400.f, 100.f});
     setAcceleration(0.6);
     setVelocity(0.6);
