@@ -51,7 +51,7 @@ public:
     void addGold(float gold);
 
     std::vector<Entity*> getEntities();
-    std::vector<Projectile*> getProjectiles();
+    std::vector<Projectile>& getProjectilePool();
     Player* getPlayer();
     float getGold();
 
@@ -64,7 +64,6 @@ private:
     GUI* gui = nullptr;
     Player* player = nullptr;
     std::vector<Entity*> entities;
-    std::vector<Projectile*> projectiles;
     float dt = 2;
     float gold = 0;
 };

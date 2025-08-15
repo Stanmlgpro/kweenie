@@ -166,10 +166,10 @@ std::vector<ProjectileData> Archer::R(sf::Vector2f mousePos) {
         return {{
             getPosition(),
             mousePos - getPosition(),
-            5.f,        // speed
-            500.f,      // lifetime
-            200.f,      // size
-            50.f,       // damage
+            7.f,       // speed
+            200.f,     // life
+            50.f,      // size
+            50.f,      // damage
             &getGame()->bigArrowTexture,
             true
         }};

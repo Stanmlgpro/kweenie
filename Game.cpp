@@ -26,21 +26,25 @@ void Game::update() {
         entity->setGame(this);
         entity->update(dt);
     }
-    for (size_t i = 0; i < projectiles.size(); ) {
-        bool expired = projectiles[i]->update(dt);
+    for (size_t i = 0; i < projectilePool.size(); ) {
+        bool expired = projectilePool[i].update(dt);
+        if (!projectilePool[i].isActive()) {
+            ++i;
+            continue;
+        }
 
         for (Entity* entity : entities) {
-            if (projectiles[i]->IsAllied() == entity->IsAllied()) continue;
-            float dist = std::sqrt(std::pow((projectiles[i]->getPosition().x - entity->getPosition().x), 2) + std::pow((projectiles[i]->getPosition().y- entity->getPosition().y), 2));
-            if (dist < projectiles[i]->getRadius() + entity->getHitboxRadius()) {
-                entity->setHp(entity->getHp() - projectiles[i]->getDamage());
+            if (projectilePool[i].IsAllied() == entity->IsAllied()) continue;
+            float dist = std::sqrt(std::pow((projectilePool[i].getPosition().x - entity->getPosition().x), 2) + std::pow((projectilePool[i].getPosition().y- entity->getPosition().y), 2));
+            if (dist < projectilePool[i].getRadius() + entity->getHitboxRadius()) {
+                entity->setHp(entity->getHp() - projectilePool[i].getDamage());
                 expired = true;
                 break;
             }
         }
 
         if (expired) {
-            projectiles[i]->deactivate();
+            projectilePool[i].deactivate();
         } else {
             ++i;
         }
@@ -77,8 +81,8 @@ void Game::setGUI(GUI* gui) {
 std::vector<Entity*> Game::getEntities() {
     return entities;
 }
-std::vector<Projectile*> Game::getProjectiles() {
-    return projectiles;
+std::vector<Projectile>& Game::getProjectilePool() {
+    return projectilePool;
 }
 
 Player* Game::getPlayer() {
@@ -95,8 +99,8 @@ Projectile* Game::getInactiveProjectile() {
     return nullptr; // all in use
 }
 
-void Game::addProjectiles(const std::vector<ProjectileData>& projectiles) {
-    for (const auto& data : projectiles) {
+void Game::addProjectiles(const std::vector<ProjectileData>& projectilePool) {
+    for (const auto& data : projectilePool) {
         Projectile* p = getInactiveProjectile();
         if (!p) {
             std::cerr << "No inactive projectile available! Increase pool size.\n";

@@ -24,6 +24,8 @@ void Projectile::Activate(sf::Vector2f startPos, sf::Vector2f direction, float s
     this->lifetime = life;
     this->radius = size;
     this->damage = damage;
+    this->texture = tex;
+    this->age = 0;
 
     float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
     if (length != 0) direction /= length;

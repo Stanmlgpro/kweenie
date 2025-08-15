@@ -218,8 +218,8 @@ void GameRenderer::draw() {
     for (Entity* entity : this->game->getEntities()) {
         entity->render(this->window);
     }
-    for (Projectile* projectile : this->game->getProjectiles()) {
-        projectile->render(this->window);
+    for (Projectile& projectile : this->game->getProjectilePool()) {
+        if (projectile.isActive()) projectile.render(window);
     }
 }
 
