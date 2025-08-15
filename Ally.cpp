@@ -78,7 +78,7 @@ Projectile* Peasant::died() {
 }
 
 Barn::Barn() {
-    setSprite("../Resources/Barn.jpg");
+    setSprite("../Resources/Barn.png");
     setPosition({100.f, 50.f});
     setAcceleration(0);
     setVelocity(0);

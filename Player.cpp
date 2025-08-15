@@ -133,7 +133,7 @@ Projectile* Archer::E(sf::Vector2f mousePos) {
 Projectile* Archer::R(sf::Vector2f mousePos) {
     if (getR_time() <= 0) {
         setR_time(getR_CD());
-        Projectile* projectile = new Projectile(getPosition(),mousePos - getPosition(), 5, 500, 200, 50, "../Resources/Big_arrow.jpg");
+        Projectile* projectile = new Projectile(getPosition(),mousePos - getPosition(), 5, 500, 200, 50, "../Resources/Big_arrow.png");
         setTargetPosition(getPosition());
         return projectile;
     }

@@ -87,7 +87,7 @@ Projectile* Zombie::died() {
 }
 
 Tombstone::Tombstone() {
-    setSprite("../Resources/Tombstone.jpg");
+    setSprite("../Resources/Tombstone.png");
     setPosition({300.f, 300.f});
     setAcceleration(0);
     setVelocity(0);
