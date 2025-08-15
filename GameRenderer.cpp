@@ -83,19 +83,19 @@ void GameRenderer::handleKeyPress(const sf::Event &event) {
             break;
         }
         case sf::Keyboard::Q: {
-            game->addProjectile(game->getPlayer()->Q(mousePos));
+            game->addProjectiles(game->getPlayer()->Q(mousePos));
             break;
         }
         case sf::Keyboard::W: {
-                game->addProjectile(game->getPlayer()->W(mousePos));
+                game->addProjectiles(game->getPlayer()->W(mousePos));
                 break;
         }
         case sf::Keyboard::E: {
-                game->addProjectile(game->getPlayer()->E(mousePos));
+                game->addProjectiles(game->getPlayer()->E(mousePos));
                 break;
         }
         case sf::Keyboard::R: {
-                game->addProjectile(game->getPlayer()->R(mousePos));
+                game->addProjectiles(game->getPlayer()->R(mousePos));
                 break;
         }
         default: {

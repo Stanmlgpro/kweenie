@@ -73,9 +73,9 @@ void Player::setR_time(float time) {
     this->R_time = time;
 }
 
-Projectile* Player::died() {
+std::vector<ProjectileData> Player::died() {
     getGame()->getGameRenderer()->getWindow()->close();
-    return nullptr;
+    return {};
 }
 
 Archer::Archer() {
@@ -96,25 +96,54 @@ Archer::Archer() {
     setSprite("../Resources/Archer.png");
 }
 
-Projectile* Archer::Q(sf::Vector2f mousePos) {
+std::vector<ProjectileData> Archer::Q(sf::Vector2f mousePos) {
     if (getQ_time() <= 0) {
         setQ_time(getQ_CD());
-        Projectile* projectile = new Projectile(getPosition(),mousePos - getPosition(), 4, 200, 30, 10, "../Resources/Arrow.png");
-        setTargetPosition(getPosition());
-        return projectile;
+            return {{
+                getPosition(),
+                mousePos - getPosition(),
+                4.f,       // speed
+                200.f,     // life
+                30.f,      // size
+                10.f,      // damage
+                &getGame()->arrowTexture,
+                true
+            }};
     }
-    return nullptr;
+    return {};
 }
-Projectile* Archer::W(sf::Vector2f mousePos) {
+
+std::vector<ProjectileData> Archer::W(sf::Vector2f mousePos) {
     if (getW_time() <= 0) {
         setW_time(getW_CD());
-        Projectile* projectile = new Projectile(getPosition(),mousePos - getPosition(), 2, 200, 20, 10, "../Resources/Arrow.png");
-        setTargetPosition(getPosition());
-        return projectile;
+
+        std::vector<ProjectileData> projectiles;
+        sf::Vector2f baseDir = mousePos - getPosition();
+        float baseAngle = std::atan2(baseDir.y, baseDir.x);
+
+        int arrowCount = 5;
+        float spread = 7.f * (M_PI / 180.f); // 7° spread
+
+        for (int i = 0; i < arrowCount; ++i) {
+            float angle = baseAngle + (i - arrowCount / 2) * spread;
+            sf::Vector2f dir(std::cos(angle), std::sin(angle));
+
+            projectiles.push_back({
+                getPosition(),
+                dir,
+                3.f,       // speed
+                200.f,     // lifetime
+                15.f,      // size
+                10.f,      // damage
+                &getGame()->arrowTexture,
+                true
+            });
+        }
+        return projectiles;
     }
-    return nullptr;
+    return {};
 }
-Projectile* Archer::E(sf::Vector2f mousePos) {
+std::vector<ProjectileData> Archer::E(sf::Vector2f mousePos) {
     if (getE_time() == 0) {
         setE_time(getE_CD());
         sf::Vector2f direction = mousePos - getPosition();
@@ -122,20 +151,28 @@ Projectile* Archer::E(sf::Vector2f mousePos) {
         float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
 
         if (length == 0.f) {
-            return nullptr;
+            return {};
         }
         direction /= length;
         setPosition(getPosition() + direction * 200.f);
         setTargetPosition(getPosition());
     }
-    return nullptr;
+    return {};
 }
-Projectile* Archer::R(sf::Vector2f mousePos) {
+std::vector<ProjectileData> Archer::R(sf::Vector2f mousePos) {
     if (getR_time() <= 0) {
         setR_time(getR_CD());
-        Projectile* projectile = new Projectile(getPosition(),mousePos - getPosition(), 5, 500, 200, 50, "../Resources/Big_arrow.png");
-        setTargetPosition(getPosition());
-        return projectile;
+
+        return {{
+            getPosition(),
+            mousePos - getPosition(),
+            5.f,        // speed
+            500.f,      // lifetime
+            200.f,      // size
+            50.f,       // damage
+            &getGame()->bigArrowTexture,
+            true
+        }};
     }
-    return nullptr;
+    return {};
 }

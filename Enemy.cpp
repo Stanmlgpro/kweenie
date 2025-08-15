@@ -66,24 +66,24 @@ void Zombie::update(float dt) {
         setCD_timer(getCD()); // reset cooldown
 
         // Create a "melee projectile" at zombie's position
-        auto meleeHit = new Projectile(
+        getGame()->addProjectiles ( {
+            {
             getPosition(),
             {1.f, 0.f},
             0.f,
             0.2f,
             75.f,
             20.f,
-            "../Resources/Arrow.png"
-        );
-        meleeHit->setIfAllied(false);
-
-        getGame()->addProjectile(meleeHit);
+            &getGame()->arrowTexture,
+            false
+            }
+        });
     }
 }
 
-Projectile* Zombie::died() {
+std::vector<ProjectileData> Zombie::died() {
     getGame()->addGold(1);
-    return nullptr;
+    return {};
 }
 
 Tombstone::Tombstone() {
@@ -109,7 +109,7 @@ void Tombstone::update(float dt) {
     }
 }
 
-Projectile* Tombstone::died() {
+std::vector<ProjectileData> Tombstone::died() {
     getGame()->addGold(5);
-    return nullptr;
+    return {};
 }

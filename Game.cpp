@@ -6,6 +6,11 @@
 #include "Enemy.h"
 
 Game::Game() {
+    arrowTexture.loadFromFile("../Resources/Arrow.png");
+    bigArrowTexture.loadFromFile("../Resources/Big_arrow.png");
+
+    projectilePool.resize(200);
+
     Archer* archer = new Archer();
     this->player = archer;
     Tombstone* tombstone1 = new Tombstone();
@@ -35,7 +40,7 @@ void Game::update() {
         }
 
         if (expired) {
-            projectiles.erase(projectiles.begin() + i);
+            projectiles[i]->deactivate();
         } else {
             ++i;
         }
@@ -44,7 +49,7 @@ void Game::update() {
     std::remove_if(entities.begin(), entities.end(),
         [&](Entity* e) {
             if (e->isDead()) {
-                addProjectile(e->died());
+                addProjectiles(e->died());
                 delete e;
                 return true;
             }
@@ -83,8 +88,31 @@ float Game::getGold() {
     return gold;
 }
 
-void Game::addProjectile(Projectile* projectile) {
-    if (projectile) this->projectiles.push_back(projectile);
+Projectile* Game::getInactiveProjectile() {
+    for (auto& p : projectilePool) {
+        if (!p.isActive()) return &p; // reuse
+    }
+    return nullptr; // all in use
+}
+
+void Game::addProjectiles(const std::vector<ProjectileData>& projectiles) {
+    for (const auto& data : projectiles) {
+        Projectile* p = getInactiveProjectile();
+        if (!p) {
+            std::cerr << "No inactive projectile available! Increase pool size.\n";
+            continue;
+        }
+        p->Activate(
+            data.startPos,
+            data.direction,
+            data.speed,
+            data.life,
+            data.size,
+            data.damage,
+            data.tex,
+            data.isAllied
+        );
+    }
 }
 void Game::addEntity(Entity* entity) {
     if (entity) this->entities.push_back(entity);

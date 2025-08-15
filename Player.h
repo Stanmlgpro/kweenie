@@ -8,16 +8,17 @@
 #include "Projectile.h"
 #include <cmath>
 
+struct ProjectileData;
 class Player : public Entity {
 public:
     Player();
 
     void update(float dt) override;
 
-    virtual Projectile* Q(sf::Vector2f mousePos) = 0;
-    virtual Projectile* W(sf::Vector2f mousePos) = 0;
-    virtual Projectile* E(sf::Vector2f mousePos) = 0;
-    virtual Projectile* R(sf::Vector2f mousePos) = 0;
+    virtual std::vector<ProjectileData> Q(sf::Vector2f mousePos) = 0;
+    virtual std::vector<ProjectileData> W(sf::Vector2f mousePos) = 0;
+    virtual std::vector<ProjectileData> E(sf::Vector2f mousePos) = 0;
+    virtual std::vector<ProjectileData> R(sf::Vector2f mousePos) = 0;
 
     float getQ_CD() const;
     float getW_CD() const;
@@ -37,7 +38,7 @@ public:
     void setE_time(float time);
     void setR_time(float time);
 
-    Projectile* died() override;
+    std::vector<ProjectileData> died() override;
 
 private:
     float Q_CD = 0;
@@ -54,10 +55,10 @@ class Archer : public Player {
 public:
     Archer();
 
-    Projectile* Q(sf::Vector2f mousePos) override;
-    Projectile* W(sf::Vector2f mousePos) override;
-    Projectile* E(sf::Vector2f mousePos) override;
-    Projectile* R(sf::Vector2f mousePos) override;
+    std::vector<ProjectileData> Q(sf::Vector2f mousePos) override;
+    std::vector<ProjectileData> W(sf::Vector2f mousePos) override;
+    std::vector<ProjectileData> E(sf::Vector2f mousePos) override;
+    std::vector<ProjectileData> R(sf::Vector2f mousePos) override;
 };
 
 #endif //PLAYER_H

@@ -58,23 +58,23 @@ void Peasant::update(float dt) {
         setCD_timer(getCD()); // reset cooldown
 
         // Create a "melee projectile" at zombie's position
-        auto meleeHit = new Projectile(
+        getGame()->addProjectiles ( {
+            {
             getPosition(),
             {1.f, 0.f},
             0.f,
             0.2f,
             75.f,
             20.f,
-            "../Resources/Arrow.png"
-        );
-        meleeHit->setIfAllied(true);
-
-        getGame()->addProjectile(meleeHit);
+            &getGame()->arrowTexture,
+            true
+            }
+        });
     }
 }
 
-Projectile* Peasant::died() {
-    return nullptr;
+std::vector<ProjectileData> Peasant::died() {
+    return {};
 }
 
 Barn::Barn() {
@@ -100,6 +100,6 @@ void Barn::update(float dt) {
     }
 }
 
-Projectile* Barn::died() {
-    return nullptr;
+std::vector<ProjectileData> Barn::died() {
+    return {};
 }

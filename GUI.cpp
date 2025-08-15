@@ -54,7 +54,7 @@ GUI::GUI(Game* game) {
                 auto mousePos = this->game->getGameRenderer()->getWindow()->mapPixelToCoords(
                     sf::Mouse::getPosition(*this->game->getGameRenderer()->getWindow())
                 );
-                this->getGame()->addProjectile(this->game->getPlayer()->Q(mousePos));
+                this->getGame()->addProjectiles(this->game->getPlayer()->Q(mousePos));
             });
         }
         if (label == "W : Shield") {
@@ -62,7 +62,7 @@ GUI::GUI(Game* game) {
                 auto mousePos = this->game->getGameRenderer()->getWindow()->mapPixelToCoords(
                     sf::Mouse::getPosition(*this->game->getGameRenderer()->getWindow())
                 );
-                this->getGame()->addProjectile(this->game->getPlayer()->W(mousePos));
+                this->getGame()->addProjectiles(this->game->getPlayer()->W(mousePos));
             });
         }
         if (label == "E : Dash") {
@@ -70,7 +70,7 @@ GUI::GUI(Game* game) {
                 auto mousePos = this->game->getGameRenderer()->getWindow()->mapPixelToCoords(
                     sf::Mouse::getPosition(*this->game->getGameRenderer()->getWindow())
                 );
-                this->getGame()->addProjectile(this->game->getPlayer()->E(mousePos));
+                this->getGame()->addProjectiles(this->game->getPlayer()->E(mousePos));
             });
         }
         if (label == "R : Bomb") {
@@ -78,7 +78,7 @@ GUI::GUI(Game* game) {
                 auto mousePos = this->game->getGameRenderer()->getWindow()->mapPixelToCoords(
                     sf::Mouse::getPosition(*this->game->getGameRenderer()->getWindow())
                 );
-                this->getGame()->addProjectile(this->game->getPlayer()->R(mousePos));
+                this->getGame()->addProjectiles(this->game->getPlayer()->R(mousePos));
             });
         }
         x += buttonWidth + spacing;

@@ -18,8 +18,25 @@ class Entity;
 class Player;
 class GameRenderer;
 class GUI;
+
+struct ProjectileData {
+    sf::Vector2f startPos;
+    sf::Vector2f direction;
+    float speed;
+    float life;
+    float size;
+    float damage;
+    sf::Texture* tex;
+    bool isAllied;
+};
+
 class Game {
 public:
+    sf::Texture arrowTexture;
+    sf::Texture bigArrowTexture;
+
+    std::vector<Projectile> projectilePool;
+
     Game();
 
     void update();
@@ -29,7 +46,7 @@ public:
 
     void setGameRenderer(GameRenderer* gameRenderer);
     void setGUI(GUI* gui);
-    void addProjectile(Projectile* projectile);
+    void addProjectiles(const std::vector<ProjectileData>& projectiles);
     void addEntity(Entity* entity);
     void addGold(float gold);
 
@@ -37,6 +54,8 @@ public:
     std::vector<Projectile*> getProjectiles();
     Player* getPlayer();
     float getGold();
+
+    Projectile* getInactiveProjectile();
 
     ~Game();
 

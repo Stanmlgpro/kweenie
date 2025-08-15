@@ -13,7 +13,7 @@ public:
 
     void update(float dt) override;
     Entity* getTarget() const;
-    Projectile* died() override = 0;
+    std::vector<ProjectileData> died() override = 0;
 
 private:
     Entity* target = nullptr;
@@ -24,7 +24,7 @@ public:
     Peasant();
 
     void update(float dt) override;
-    Projectile* died() override;
+    std::vector<ProjectileData> died() override;
 };
 
 class Barn : public Ally {
@@ -32,6 +32,6 @@ public:
     Barn();
 
     void update(float dt) override;
-    Projectile* died() override;
+    std::vector<ProjectileData> died() override;
 };
 #endif //ALLY_H

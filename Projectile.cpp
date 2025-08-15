@@ -18,11 +18,26 @@ Projectile::Projectile(sf::Vector2f startPos, sf::Vector2f direction, float spd,
     setSprite(texturePath);
 }
 
-void Projectile::setSprite(const std::string& img_path) {
-    if (!this->texture.loadFromFile(img_path)) {
-        std::cerr << "Failed to load texture" << std::endl;
-    }
-    this->sprite.setTexture(this->texture);
+void Projectile::Activate(sf::Vector2f startPos, sf::Vector2f direction, float spd, float life, float size, float damage, sf::Texture* tex, bool isAllied) {
+    this->position = startPos;
+    this->speed = spd;
+    this->lifetime = life;
+    this->radius = size;
+    this->damage = damage;
+
+    float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
+    if (length != 0) direction /= length;
+
+    velocity = direction * speed;
+
+    shape.setRadius(radius);
+    shape.setFillColor(sf::Color::Red);
+    shape.setOrigin(radius, radius);
+    shape.setPosition(position);
+
+    active = true;
+    setIfAllied(isAllied);
+    this->sprite.setTexture(*texture);
 
     // Center the sprite
     sf::FloatRect bounds = sprite.getLocalBounds();
@@ -30,7 +45,28 @@ void Projectile::setSprite(const std::string& img_path) {
 
     float radius = shape.getRadius();
 
-    sf::Vector2u texSize = this->texture.getSize();
+    sf::Vector2u texSize = this->texture->getSize();
+    float scaleFactor = (radius * 2.f) / static_cast<float>(texSize.x);
+    sprite.setScale(scaleFactor, scaleFactor);
+
+    // Rotate according to velocity direction
+    float angle = std::atan2(velocity.y, velocity.x) * 180.f / M_PI;
+    sprite.setRotation(angle);
+}
+
+void Projectile::setSprite(const std::string& img_path) {
+    if (!this->texture->loadFromFile(img_path)) {
+        std::cerr << "Failed to load texture" << std::endl;
+    }
+    this->sprite.setTexture(*texture);
+
+    // Center the sprite
+    sf::FloatRect bounds = sprite.getLocalBounds();
+    sprite.setOrigin(bounds.width / 2.f, bounds.height / 2.f);
+
+    float radius = shape.getRadius();
+
+    sf::Vector2u texSize = this->texture->getSize();
     float scaleFactor = (radius * 2.f) / static_cast<float>(texSize.x);
     sprite.setScale(scaleFactor, scaleFactor);
 
@@ -45,6 +81,7 @@ void Projectile::render(sf::RenderWindow* window) {
 }
 
 bool Projectile::update(float dt) {
+    if (!active) return false;
     position += velocity * dt;
     age += dt;
     shape.setPosition(position);

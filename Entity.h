@@ -11,6 +11,7 @@
 
 class Projectile;
 class Game;
+struct ProjectileData;
 class Entity {
 private:
     sf::Vector2f targetPosition;
@@ -65,7 +66,7 @@ public:
     void setCD_timer(float CD_timer) {this->CD_timer = CD_timer; }
 
     virtual void update(float dt);
-    virtual Projectile* died() = 0;
+    virtual std::vector<ProjectileData> died() = 0;
 
     virtual ~Entity() = default;
 };
