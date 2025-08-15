@@ -37,6 +37,8 @@ public:
     void setE_time(float time);
     void setR_time(float time);
 
+    Projectile* died() override;
+
 private:
     float Q_CD = 0;
     float Q_time = 0;

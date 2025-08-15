@@ -161,13 +161,13 @@ void GUI::render() {
     }
 
     // Draw cooldown texts (assume text[0..3] are cooldowns)
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < 5; i++) {
         window->draw(text[i]);
     }
 
     // --- Draw HP texts in WORLD view ---
     window->setView(this->game->getGameRenderer()->getView());
-    for (int i = 4; i < text.size(); i++) {
+    for (int i = 5; i < text.size(); i++) {
         window->draw(text[i]);
     }
 }
@@ -209,7 +209,22 @@ void GUI::updateText() {
     updateOne(text[2], this->game->getPlayer()->getE_time());
     updateOne(text[3], this->game->getPlayer()->getR_time());
 
-    text.resize(4);
+    // Add gold counter as text[4]
+    text.resize(5); // Ensure we have space for gold counter
+    std::ostringstream ss;
+    ss << std::fixed << std::setprecision(1) << this->game->getGold();
+    text[4].setFont(font);
+    text[4].setString("Gold: " + ss.str());
+    text[4].setCharacterSize(24);
+    text[4].setFillColor(sf::Color::Yellow);
+
+    // Position in top-right of ability buttons area
+    sf::FloatRect bounds = text[4].getLocalBounds();
+    text[4].setOrigin(bounds.left + bounds.width / 2.f, bounds.top + bounds.height / 2.f);
+    text[4].setPosition(game->getGameRenderer()->getWindow()->getSize().x - 60 - 7*ss.str().length(), 15);
+
+    // Rest of your existing HP text code...
+    text.resize(5); // Keep this before HP texts so gold counter persists
     for (auto entity : getGame()->getEntities()) {
         sf::Text hpText;
         hpText.setFont(font); // set your font

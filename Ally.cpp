@@ -73,6 +73,10 @@ void Peasant::update(float dt) {
     }
 }
 
+Projectile* Peasant::died() {
+    return nullptr;
+}
+
 Barn::Barn() {
     setSprite("../Resources/Barn.jpg");
     setPosition({100.f, 50.f});
@@ -94,4 +98,8 @@ void Barn::update(float dt) {
         zombie->setPosition(getPosition());
         getGame()->addEntity(zombie);
     }
+}
+
+Projectile* Barn::died() {
+    return nullptr;
 }

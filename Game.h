@@ -31,10 +31,12 @@ public:
     void setGUI(GUI* gui);
     void addProjectile(Projectile* projectile);
     void addEntity(Entity* entity);
+    void addGold(float gold);
 
     std::vector<Entity*> getEntities();
     std::vector<Projectile*> getProjectiles();
     Player* getPlayer();
+    float getGold();
 
     ~Game();
 
@@ -45,6 +47,7 @@ private:
     std::vector<Entity*> entities;
     std::vector<Projectile*> projectiles;
     float dt = 2;
+    float gold = 0;
 };
 
 

@@ -13,6 +13,7 @@ public:
 
     void update(float dt) override;
     Entity* getTarget() const;
+    Projectile* died() override = 0;
 
 private:
     Entity* target = nullptr;
@@ -23,6 +24,7 @@ public:
     Peasant();
 
     void update(float dt) override;
+    Projectile* died() override;
 };
 
 class Barn : public Ally {
@@ -30,5 +32,6 @@ public:
     Barn();
 
     void update(float dt) override;
+    Projectile* died() override;
 };
 #endif //ALLY_H

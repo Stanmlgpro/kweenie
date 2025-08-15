@@ -81,6 +81,11 @@ void Zombie::update(float dt) {
     }
 }
 
+Projectile* Zombie::died() {
+    getGame()->addGold(1);
+    return nullptr;
+}
+
 Tombstone::Tombstone() {
     setSprite("../Resources/Tombstone.jpg");
     setPosition({300.f, 300.f});
@@ -104,3 +109,7 @@ void Tombstone::update(float dt) {
     }
 }
 
+Projectile* Tombstone::died() {
+    getGame()->addGold(5);
+    return nullptr;
+}

@@ -13,6 +13,7 @@ public:
 
     void update(float dt) override;
     Entity* getTarget() const;
+    Projectile* died() override = 0;
 
 private:
     Entity* target = nullptr;
@@ -23,6 +24,7 @@ public:
     Zombie();
 
     void update(float dt) override;
+    Projectile* died() override;
 };
 
 class Tombstone : public Enemy {
@@ -30,5 +32,6 @@ public:
     Tombstone();
 
     void update(float dt) override;
+    Projectile* died() override;
 };
 #endif //ENEMY_H

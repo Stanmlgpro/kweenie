@@ -9,6 +9,7 @@
 #include <iostream>
 #include <cmath>
 
+class Projectile;
 class Game;
 class Entity {
 private:
@@ -64,6 +65,7 @@ public:
     void setCD_timer(float CD_timer) {this->CD_timer = CD_timer; }
 
     virtual void update(float dt);
+    virtual Projectile* died() = 0;
 
     virtual ~Entity() = default;
 };

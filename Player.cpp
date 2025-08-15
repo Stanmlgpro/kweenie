@@ -3,6 +3,7 @@
 //
 
 #include "Player.h"
+#include "Game.h"
 
 Player::Player() {
     setIfAllied(true);
@@ -70,6 +71,11 @@ void Player::setE_time(float time) {
 }
 void Player::setR_time(float time) {
     this->R_time = time;
+}
+
+Projectile* Player::died() {
+    getGame()->getGameRenderer()->getWindow()->close();
+    return nullptr;
 }
 
 Archer::Archer() {

@@ -1,5 +1,7 @@
 #include "Game.h"
 
+#include <variant>
+
 #include "Ally.h"
 #include "Enemy.h"
 
@@ -42,7 +44,7 @@ void Game::update() {
     std::remove_if(entities.begin(), entities.end(),
         [&](Entity* e) {
             if (e->isDead()) {
-                if (e == player) getGameRenderer()->getWindow()->close();
+                addProjectile(e->died());
                 delete e;
                 return true;
             }
@@ -77,12 +79,18 @@ std::vector<Projectile*> Game::getProjectiles() {
 Player* Game::getPlayer() {
     return player;
 }
+float Game::getGold() {
+    return gold;
+}
 
 void Game::addProjectile(Projectile* projectile) {
     if (projectile) this->projectiles.push_back(projectile);
 }
 void Game::addEntity(Entity* entity) {
     if (entity) this->entities.push_back(entity);
+}
+void Game::addGold(float gold) {
+    this->gold += gold;
 }
 
 Game::~Game() {
