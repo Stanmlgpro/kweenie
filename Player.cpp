@@ -121,8 +121,8 @@ std::vector<ProjectileData> Archer::W(sf::Vector2f mousePos) {
         sf::Vector2f baseDir = mousePos - getPosition();
         float baseAngle = std::atan2(baseDir.y, baseDir.x);
 
-        int arrowCount = 5;
-        float spread = 7.f * (M_PI / 180.f); // 7° spread
+        int arrowCount = 15;
+        float spread = 2.f * (M_PI / 180.f); // 2° spread
 
         for (int i = 0; i < arrowCount; ++i) {
             float angle = baseAngle + (i - arrowCount / 2) * spread;
@@ -134,7 +134,7 @@ std::vector<ProjectileData> Archer::W(sf::Vector2f mousePos) {
                 3.f,       // speed
                 200.f,     // lifetime
                 15.f,      // size
-                10.f,      // damage
+                5.f,      // damage
                 &getGame()->arrowTexture,
                 true
             });
@@ -155,14 +155,13 @@ std::vector<ProjectileData> Archer::E(sf::Vector2f mousePos) {
         }
         direction /= length;
         setPosition(getPosition() + direction * 200.f);
-        setTargetPosition(getPosition());
     }
     return {};
 }
 std::vector<ProjectileData> Archer::R(sf::Vector2f mousePos) {
     if (getR_time() <= 0) {
         setR_time(getR_CD());
-
+        setTargetPosition(getPosition());
         return {{
             getPosition(),
             mousePos - getPosition(),
@@ -170,7 +169,7 @@ std::vector<ProjectileData> Archer::R(sf::Vector2f mousePos) {
             200.f,     // life
             50.f,      // size
             50.f,      // damage
-            &getGame()->bigArrowTexture,
+            &getGame()->arrowTexture,
             true
         }};
     }
