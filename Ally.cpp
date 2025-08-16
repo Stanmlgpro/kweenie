@@ -94,9 +94,9 @@ void Barn::update(float dt) {
     if (getCD_timer() <= 0) {
         setCD_timer(getCD());
 
-        auto zombie = new Peasant();
-        zombie->setPosition(getPosition());
-        getGame()->addEntity(zombie);
+        auto peasant = new Peasant();
+        peasant->setPosition(getPosition());
+        getGame()->addEntity(peasant);
     }
 }
 

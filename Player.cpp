@@ -91,7 +91,7 @@ Archer::Archer() {
     setW_time(0);
     setE_CD(6);
     setE_time(0);
-    setR_CD(30);
+    setR_CD(10);
     setR_time(0);
     setSprite("../Resources/Archer.png");
 }
