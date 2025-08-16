@@ -40,7 +40,16 @@ void Game::update() {
         wave->setGame(this);
         wave->update(dt);
 
-        if (wave->getLength() <= 0) {
+        // Check if wave is finished AND no enemies remain
+        bool enemiesRemain = false;
+        for (Entity* entity : entities) {
+            if (!entity->IsAllied()) {
+                enemiesRemain = true;
+                break;
+            }
+        }
+
+        if (wave->getLength() <= 0 && !enemiesRemain) {
             waveFinished = true;
             time_between_waves_timer = time_between_waves; // start countdown after wave ends
         }
@@ -49,13 +58,26 @@ void Game::update() {
         std::cout << "counting down: " << time_between_waves_timer << std::endl;
 
         if (time_between_waves_timer <= 0) {
-            setWave(new Wave(difficulty, std::pow(difficulty*2,2)*sqrt(game_length)*2, false));
-            game_length++;
-            waveFinished = false; // wave started
+            // Only spawn new wave if no enemies exist
+            bool enemiesRemain = false;
+            for (Entity* entity : entities) {
+                if (!entity->IsAllied()) {
+                    enemiesRemain = true;
+                    break;
+                }
+            }
+
+            if (!enemiesRemain) {
+                setWave(new Wave(difficulty*sqrt(game_length), std::pow(game_length,2), false));
+                game_length++;
+                waveFinished = false; // wave started
+            }
         }
     }
+
     wave->setGame(this);
     wave->update(dt);
+
     for (Entity* entity : entities) {
         entity->setGame(this);
         entity->update(dt);

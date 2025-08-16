@@ -92,11 +92,19 @@ void Barn::update(float dt) {
     Ally::update(dt);
 
     if (getCD_timer() <= 0) {
-        setCD_timer(getCD());
+        // Count existing peasants
+        int activePeasants = 0;
+        for (Entity* e : getGame()->getEntities()) {
+            if (dynamic_cast<Peasant*>(e)) activePeasants++;
+        }
 
-        auto peasant = new Peasant();
-        peasant->setPosition(getPosition());
-        getGame()->addEntity(peasant);
+        const int maxPeasants = 5;
+        if (activePeasants < maxPeasants) {
+            setCD_timer(getCD());
+            auto peasant = new Peasant();
+            peasant->setPosition(getPosition());
+            getGame()->addEntity(peasant);
+        }
     }
 }
 

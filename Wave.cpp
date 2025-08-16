@@ -17,21 +17,15 @@ void Wave::setGame(Game* game) {
 }
 
 float Wave::calculateSpawnTime() const {
-    float extra_factor = 3000;
-    float baseTime = 2.5f * extra_factor;       // base spawn interval in seconds
-    float minTime  = 0.3  * extra_factor;       // never faster than this
-    float difficultyFactor = 0.15f * extra_factor; // higher = faster spawn at higher difficulty
-    float lengthFactor = 0.08f * extra_factor;  // slows down for bigger waves
+    float extra_factor = 300;
+    float baseTime = 2.5f * extra_factor;             // base spawn interval
+    float difficultyFactor = 0.5f;    // higher difficulty → faster spawn
 
-    // Exponential decay with difficulty
-    float difficultyTime = baseTime * std::exp(-difficulty * difficultyFactor);
+    float spawnTime = baseTime / (1.0f + difficulty * difficultyFactor); // faster with difficulty
+    spawnTime += length;                                   // slightly slower for more enemies
 
-    // Slightly increase for large waves
-    float lengthTime = length * lengthFactor;
-
-    float spawnTime = difficultyTime + lengthTime;
-
-    return std::max(minTime, spawnTime);
+    std::cout << spawnTime << std::endl;
+    return spawnTime;
 }
 
 void Wave::update(float dt) {
@@ -54,12 +48,15 @@ sf::Vector2f Wave::chooseSpawnPointAroundPlayer(sf::Vector2f playerPos, float ra
     return {x, y};
 }
 
-int Wave::biasedIndex(int maxIndex, float bias) {
-    // random in [0,1)
+int Wave::biasedIndex(int maxIndex, float difficulty) {
     float r = static_cast<float>(rand()) / RAND_MAX;
 
-    // power bias: higher bias = more weight on small numbers
-    r = pow(r, bias);
+    // Bias formula:
+    // At difficulty 0 → pow(r, 2.0) → favors low indices strongly
+    // At higher difficulty → pow(r, 0.5..1) → more uniform, allows stronger enemies
+    float bias = std::max(0.5f, 2.0f - difficulty * 0.2f);
+
+    r = pow(r, bias); // lower bias favors stronger enemies less at start
 
     return static_cast<int>(r * (maxIndex + 1));
 }
@@ -75,7 +72,7 @@ std::string Wave::chooseEnemy() {
     }
 
     // Normal enemy from enemies vector
-    int index = biasedIndex(enemies.size() - 1, 2.0f); // bias = 2
+    int index = biasedIndex(enemies.size() - 1, difficulty);
     return enemies[index];
 }
 
