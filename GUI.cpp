@@ -4,6 +4,7 @@
 
 #include "GUI.h"
 
+#include "Ally.h"
 #include "Enemy.h"
 
 GUI::GUI(Game* game) {
@@ -11,7 +12,9 @@ GUI::GUI(Game* game) {
 
     std::unordered_map<RenderState, std::vector<std::string>> stateLabels = {
         {DEFAULT, {"Structures", "Lorem Ipsum", "Lorem Ipsum", "Lorem Ipsum"}},
-        {STRUCTURES, {"Barrack", "Lorem Ipsum", "Back", "Lorem Ipsum", "Lorem Ipsum", "Lorem Ipsum"}}
+        {STRUCTURES, {"Barn", "Barrack", "Back", "Lorem Ipsum", "Lorem Ipsum", "Lorem Ipsum"}},
+        {BUILD_BARN, {"Back"}},
+        {BUILD_BARRACK, {"Back"}}
     };
     std::vector<std::string> abilities = {"Q : Sword", "W : Shield", "E : Dash", "R : Bomb"};
     font.loadFromFile("../Resources/geist_mono.ttf");
@@ -48,7 +51,6 @@ GUI::GUI(Game* game) {
         text.setPosition(button.getShape().getPosition());
 
         this->game->getGameRenderer()->getWindow()->setView(this->game->getGameRenderer()->getView());
-        sf::Vector2f mousePos = this->game->getGameRenderer()->getWindow()->mapPixelToCoords(sf::Mouse::getPosition(*this->game->getGameRenderer()->getWindow()));
         if (label == "Q : Sword") {
             button.setOnClick([&]() {
                 auto mousePos = this->game->getGameRenderer()->getWindow()->mapPixelToCoords(
@@ -132,6 +134,8 @@ GUI::GUI(Game* game) {
 
             if (label == "Structures") button.setOnClick([&]() {setState(STRUCTURES);});
             if (label == "Back") button.setOnClick([&]() {setState(previousState);});
+            if (label == "Barn") button.setOnClick([&]() {setState(BUILD_BARN);});
+            if (label == "Barrack") button.setOnClick([&]() {setState(BUILD_BARRACK);});
             if (label == "Lorem Ipsum") button.setOnClick([&]() {setState(DEFAULT);});
 
             buttons[state].push_back(button);
@@ -185,6 +189,17 @@ std::vector<uiButton>&  GUI::getStateButtons() {
 RenderState GUI::worldClick(sf::Vector2f mousePos) {
     if (renderState == DEFAULT) {
         this->game->getPlayer()->setTargetPosition(mousePos);
+        return DEFAULT;
+    }
+    if (renderState == BUILD_BARN) {
+        float barnPrice = 10;
+        if (getGame()->getGold() >= barnPrice) {
+            auto barn = new Barn();
+            barn->setPosition(mousePos);
+            getGame()->addGold(-barnPrice);
+            getGame()->addEntity(barn);
+        }
+        return previousState;
     }
     return DEFAULT;
 }

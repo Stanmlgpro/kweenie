@@ -7,7 +7,9 @@
 
 enum RenderState : short {
     DEFAULT,
-    STRUCTURES
+    STRUCTURES,
+    BUILD_BARN,
+    BUILD_BARRACK
 };
 
 #endif //RENDERSTATE_H
