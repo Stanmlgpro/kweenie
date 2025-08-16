@@ -119,6 +119,13 @@ build CMakeFiles/project.dir/Ally.cpp.obj: CXX_COMPILER__project_unscanned_Debug
   OBJECT_DIR = CMakeFiles\project.dir
   OBJECT_FILE_DIR = CMakeFiles\project.dir
 
+build CMakeFiles/project.dir/Wave.cpp.obj: CXX_COMPILER__project_unscanned_Debug C$:/Users/stan1/CLionProjects/WoW$ thing/Wave.cpp || cmake_object_order_depends_target_project
+  DEP_FILE = CMakeFiles\project.dir\Wave.cpp.obj.d
+  FLAGS = -g -std=gnu++17 -fdiagnostics-color=always
+  INCLUDES = -isystem C:/Users/stan1/CLionProjects/sfml/2.6.2/include
+  OBJECT_DIR = CMakeFiles\project.dir
+  OBJECT_FILE_DIR = CMakeFiles\project.dir
+
 
 # =============================================================================
 # Link build statements for EXECUTABLE target project
@@ -127,7 +134,7 @@ build CMakeFiles/project.dir/Ally.cpp.obj: CXX_COMPILER__project_unscanned_Debug
 #############################################
 # Link the executable project.exe
 
-build project.exe: CXX_EXECUTABLE_LINKER__project_Debug CMakeFiles/project.dir/main.cpp.obj CMakeFiles/project.dir/Game.cpp.obj CMakeFiles/project.dir/GameRenderer.cpp.obj CMakeFiles/project.dir/GUI.cpp.obj CMakeFiles/project.dir/uiButton.cpp.obj CMakeFiles/project.dir/Entity.cpp.obj CMakeFiles/project.dir/Player.cpp.obj CMakeFiles/project.dir/Projectile.cpp.obj CMakeFiles/project.dir/Enemy.cpp.obj CMakeFiles/project.dir/Ally.cpp.obj | C$:/Users/stan1/CLionProjects/sfml/2.6.2/lib/libsfml-graphics-d.a C$:/Users/stan1/CLionProjects/sfml/2.6.2/lib/libsfml-window-d.a C$:/Users/stan1/CLionProjects/sfml/2.6.2/lib/libsfml-system-d.a
+build project.exe: CXX_EXECUTABLE_LINKER__project_Debug CMakeFiles/project.dir/main.cpp.obj CMakeFiles/project.dir/Game.cpp.obj CMakeFiles/project.dir/GameRenderer.cpp.obj CMakeFiles/project.dir/GUI.cpp.obj CMakeFiles/project.dir/uiButton.cpp.obj CMakeFiles/project.dir/Entity.cpp.obj CMakeFiles/project.dir/Player.cpp.obj CMakeFiles/project.dir/Projectile.cpp.obj CMakeFiles/project.dir/Enemy.cpp.obj CMakeFiles/project.dir/Ally.cpp.obj CMakeFiles/project.dir/Wave.cpp.obj | C$:/Users/stan1/CLionProjects/sfml/2.6.2/lib/libsfml-graphics-d.a C$:/Users/stan1/CLionProjects/sfml/2.6.2/lib/libsfml-window-d.a C$:/Users/stan1/CLionProjects/sfml/2.6.2/lib/libsfml-system-d.a
   FLAGS = -g
   LINK_LIBRARIES = C:/Users/stan1/CLionProjects/sfml/2.6.2/lib/libsfml-graphics-d.a  C:/Users/stan1/CLionProjects/sfml/2.6.2/lib/libsfml-window-d.a  C:/Users/stan1/CLionProjects/sfml/2.6.2/lib/libsfml-system-d.a  -lkernel32 -luser32 -lgdi32 -lwinspool -lshell32 -lole32 -loleaut32 -luuid -lcomdlg32 -ladvapi32
   OBJECT_DIR = CMakeFiles\project.dir

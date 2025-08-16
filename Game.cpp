@@ -13,15 +13,49 @@ Game::Game() {
 
     Archer* archer = new Archer();
     this->player = archer;
-    Tombstone* tombstone1 = new Tombstone();
-    tombstone1->setPosition({300.f, 300.f});
-    Tombstone* tombstone2 = new Tombstone();
-    tombstone2->setPosition({900.f, 220.f});
-    Barn* barn = new Barn();
-    this->entities = {player, tombstone1, tombstone2, barn};
+    addEntity(player);
+    setDifficulty(1);
+    start();
+}
+
+void Game::start() {
+    time_between_waves = timeBetweenWaves();
+    time_between_waves_timer = time_between_waves;
+    setWave(new Wave(difficulty, std::pow(difficulty*2,2), false));
+}
+
+float Game::timeBetweenWaves() {
+    float extra_factor = 100;
+    float baseTime = 15.f * extra_factor;     // seconds at easy difficulty
+    float minTime  = 3.f * extra_factor;      // never shorter than this
+    float decay    = 0.85f * extra_factor;    // smaller = faster decay with difficulty
+
+    float time = baseTime * pow(decay, getDifficulty() - 1);
+
+    return std::max(minTime, time);
 }
 
 void Game::update() {
+    if (!waveFinished) {
+        wave->setGame(this);
+        wave->update(dt);
+
+        if (wave->getLength() <= 0) {
+            waveFinished = true;
+            time_between_waves_timer = time_between_waves; // start countdown after wave ends
+        }
+    } else {
+        time_between_waves_timer -= dt;
+        std::cout << "counting down: " << time_between_waves_timer << std::endl;
+
+        if (time_between_waves_timer <= 0) {
+            setWave(new Wave(difficulty, std::pow(difficulty*2,2)*sqrt(game_length)*2, false));
+            game_length++;
+            waveFinished = false; // wave started
+        }
+    }
+    wave->setGame(this);
+    wave->update(dt);
     for (Entity* entity : entities) {
         entity->setGame(this);
         entity->update(dt);
@@ -63,6 +97,9 @@ void Game::update() {
 );
     this->getGameRenderer()->render();
 }
+void Game::setDifficulty(int difficulty) {
+    this->difficulty = difficulty;
+}
 
 GameRenderer* Game::getGameRenderer() {
     return gameRenderer;
@@ -90,6 +127,9 @@ Player* Game::getPlayer() {
 }
 float Game::getGold() {
     return gold;
+}
+float Game::getDifficulty() {
+    return difficulty;
 }
 
 Projectile* Game::getInactiveProjectile() {
@@ -120,6 +160,9 @@ void Game::addProjectiles(const std::vector<ProjectileData>& projectilePool) {
 }
 void Game::addEntity(Entity* entity) {
     if (entity) this->entities.push_back(entity);
+}
+void Game::setWave(Wave* wave) {
+    if (wave) this->wave = wave;
 }
 void Game::addGold(float gold) {
     this->gold += gold;
