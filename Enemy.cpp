@@ -99,7 +99,7 @@ Tombstone::Tombstone() {
 
 void Tombstone::update(float dt) {
     Enemy::update(dt);
-
+    setHp(getHp() - dt/70);
     if (getCD_timer() <= 0) {
         setCD_timer(getCD());
 
