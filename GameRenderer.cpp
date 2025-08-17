@@ -215,11 +215,14 @@ void GameRenderer::fixBackground() {
 void GameRenderer::draw() {
     fixBackground();
     window->draw(background);
-    for (Entity* entity : this->game->getEntities()) {
-        entity->render(this->window);
-    }
     for (Projectile& projectile : this->game->getProjectilePool()) {
         if (projectile.isActive()) projectile.render(window);
+    }
+    for (AreaEffect& areaEffect : this->game->getAreaEffectPool()) {
+        if (areaEffect.isActive()) areaEffect.render(window);
+    }
+    for (Entity* entity : this->game->getEntities()) {
+        entity->render(this->window);
     }
 }
 

@@ -173,7 +173,21 @@ std::vector<ProjectileData> Archer::R(sf::Vector2f mousePos) {
             50.f,      // damage
             &getGame()->arrowTexture,
             true,
-            nullptr
+            [&](const sf::Vector2f& hitPos) {
+                getGame()->addAreaEffects( {
+                    {
+                        hitPos,
+                        1000.f,
+                        120.f,
+                        10.f,
+                    &getGame()->fireTexture,
+                        true,
+                        [&](Entity& entity) {
+                            entity.setHp(entity.getHp() - 1);
+                        }
+                    }
+                });
+            }
         }};
     }
     return {};

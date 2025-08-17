@@ -40,7 +40,7 @@ void Projectile::Activate(sf::Vector2f startPos, sf::Vector2f direction, float s
 
     active = true;
     setIfAllied(isAllied);
-    this->sprite.setTexture(*texture);
+    sprite.setTexture(*texture);
 
     // Center the sprite
     sf::FloatRect bounds = sprite.getLocalBounds();

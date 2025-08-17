@@ -8,8 +8,10 @@
 Game::Game() {
     arrowTexture.loadFromFile("../Resources/Arrow.png");
     bigArrowTexture.loadFromFile("../Resources/Big_arrow.png");
+    fireTexture.loadFromFile("../Resources/Fire.png");
 
     projectilePool.resize(200);
+    areaEffectPool.resize(200);
 
     Archer* archer = new Archer();
     this->player = archer;
@@ -106,6 +108,19 @@ void Game::update() {
             ++i;
         }
     }
+    for (size_t i = 0; i < areaEffectPool.size(); ) {
+        areaEffectPool[i].setGame(this);
+        bool expired = areaEffectPool[i].update(dt);
+        if (!areaEffectPool[i].isActive()) {
+            ++i;
+            continue;
+        }
+        if (expired) {
+            areaEffectPool[i].deactivate();
+        } else {
+            ++i;
+        }
+    }
     entities.erase(
     std::remove_if(entities.begin(), entities.end(),
         [&](Entity* e) {
@@ -144,6 +159,9 @@ std::vector<Entity*> Game::getEntities() {
 std::vector<Projectile>& Game::getProjectilePool() {
     return projectilePool;
 }
+std::vector<AreaEffect>& Game::getAreaEffectPool() {
+    return areaEffectPool;
+}
 
 Player* Game::getPlayer() {
     return player;
@@ -161,9 +179,15 @@ Projectile* Game::getInactiveProjectile() {
     }
     return nullptr; // all in use
 }
+AreaEffect* Game::getInactiveAreaEffect() {
+    for (auto& a : areaEffectPool) {
+        if (!a.isActive()) return &a; // reuse
+    }
+    return nullptr; // all in use
+}
 
-void Game::addProjectiles(const std::vector<ProjectileData>& projectilePool) {
-    for (const auto& data : projectilePool) {
+void Game::addProjectiles(const std::vector<ProjectileData>& projectiles) {
+    for (const auto& data : projectiles) {
         Projectile* p = getInactiveProjectile();
         if (!p) {
             std::cerr << "No inactive projectile available! Increase pool size.\n";
@@ -182,6 +206,26 @@ void Game::addProjectiles(const std::vector<ProjectileData>& projectilePool) {
         );
     }
 }
+
+void Game::addAreaEffects(const std::vector<AreaEffectData>& areaEffects) {
+    for (const auto& data : areaEffects) {
+        AreaEffect* a = getInactiveAreaEffect();
+        if (!a) {
+            std::cerr << "No inactive areaEffect available! Increase pool size.\n";
+            continue;
+        }
+        a->Activate(
+            data.Pos,
+            data.life,
+            data.size,
+            data.tickInterval,
+            data.tex,
+            data.isAllied,
+            data.onHit
+        );
+    }
+}
+
 void Game::addEntity(Entity* entity) {
     if (entity) this->entities.push_back(entity);
 }
@@ -190,6 +234,24 @@ void Game::setWave(Wave* wave) {
 }
 void Game::addGold(float gold) {
     this->gold += gold;
+}
+
+std::vector<Entity*> Game::getEntitiesInRange(sf::Vector2f pos, float radius, bool onlyAllies, bool onlyEnemies) {
+    std::vector<Entity*> result;
+
+    for (auto& entity : getEntities()) {
+        float dx = entity->getPosition().x - pos.x;
+        float dy = entity->getPosition().y - pos.y;
+        float distSq = dx*dx + dy*dy;
+        std::cout << "Effect pos: " << pos.x << "," << pos.y
+          << " | Entity pos: " << entity->getPosition().x << "," << entity->getPosition().y
+          << " | dx*dx+dy*dy: " << (entity->getPosition().x - pos.x)*(entity->getPosition().x - pos.x) +
+                                    (entity->getPosition().y - pos.y)*(entity->getPosition().y - pos.y)
+          << std::endl;
+        float combinedRadius = radius + entity->getHitboxRadius();
+        if (distSq <= combinedRadius*combinedRadius) result.push_back(entity);
+    }
+    return result;
 }
 
 Game::~Game() {

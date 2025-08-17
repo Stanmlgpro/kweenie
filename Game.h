@@ -13,6 +13,7 @@
 #include "Player.h"
 #include "Projectile.h"
 #include <cmath>
+#include "AreaEffect.h"
 #include "Wave.h"
 
 class Entity;
@@ -32,12 +33,24 @@ struct ProjectileData {
     std::function<void(const sf::Vector2f&)> onHit;
 };
 
+struct AreaEffectData {
+    sf::Vector2f Pos;
+    float life;
+    float size;
+    float tickInterval;
+    sf::Texture* tex;
+    bool isAllied;
+    std::function<void(Entity&)> onHit;
+};
+
 class Game {
 public:
     sf::Texture arrowTexture;
     sf::Texture bigArrowTexture;
+    sf::Texture fireTexture;
 
     std::vector<Projectile> projectilePool;
+    std::vector<AreaEffect> areaEffectPool;
 
     Game();
 
@@ -53,17 +66,22 @@ public:
     void setGUI(GUI* gui);
     void setDifficulty(int difficulty);
     void addProjectiles(const std::vector<ProjectileData>& projectiles);
+    void addAreaEffects(const std::vector<AreaEffectData>& areaEffects);
     void addEntity(Entity* entity);
     void setWave(Wave* wave);
     void addGold(float gold);
 
     std::vector<Entity*> getEntities();
     std::vector<Projectile>& getProjectilePool();
+    std::vector<AreaEffect>& getAreaEffectPool();
     Player* getPlayer();
     float getGold();
     float getDifficulty();
 
     Projectile* getInactiveProjectile();
+    AreaEffect* getInactiveAreaEffect();
+
+    std::vector<Entity*> getEntitiesInRange(sf::Vector2f pos, float radius, bool onlyAllies, bool onlyEnemies);
 
     ~Game();
 
