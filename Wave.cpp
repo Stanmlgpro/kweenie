@@ -62,19 +62,11 @@ int Wave::biasedIndex(int maxIndex, float difficulty) {
 }
 
 std::string Wave::chooseEnemy() {
-    // Chance for boss if bossfight == true
-    if (bossfight && !bosses.empty()) {
-        float chance = 0.1f; // 10% chance per spawn
-        float r = static_cast<float>(rand()) / RAND_MAX;
-        if (r < chance) {
-            length = 0;
-            return bosses[rand() % bosses.size()];
-        }
+    if (bossfight) {
+        length = 0;
+        return bosses[rand() % bosses.size()];
     }
-
-    // Normal enemy from enemies vector
-    int index = biasedIndex(enemies.size() - 1, difficulty);
-    return enemies[index];
+    return enemies[biasedIndex(enemies.size() - 1, difficulty)];
 }
 
 void Wave::spawn() {

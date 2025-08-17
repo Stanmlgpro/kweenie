@@ -38,7 +38,7 @@ void AreaEffect::Activate(sf::Vector2f Pos, float life, float size, float tickIn
 
 void AreaEffect::render(sf::RenderWindow* window) {
     sprite.setPosition(position.x, position.y);
-    window->draw(sprite);
+    window->draw(sprite);w
 }
 
 bool AreaEffect::update(float dt) {
@@ -48,7 +48,7 @@ bool AreaEffect::update(float dt) {
     tickTimer -= dt;
     if (tickTimer <= 0.f) {
         tickTimer = tickInterval;
-        for (auto entity : getGame()->getEntitiesInRange(position, radius, allied, !allied)) {
+        for (auto entity : getGame()->getEntitiesInRange(position, radius, !allied, allied)) {
             if (onHit) onHit(*entity);
         }
     }

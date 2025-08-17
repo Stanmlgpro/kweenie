@@ -24,7 +24,7 @@ Game::Game() {
 void Game::start() {
     time_between_waves = timeBetweenWaves();
     time_between_waves_timer = time_between_waves;
-    setWave(new Wave(difficulty, std::pow(difficulty*2,2), true));
+    setWave(new Wave(difficulty, std::pow(difficulty*2,2), false));
 }
 
 float Game::timeBetweenWaves() {
@@ -71,7 +71,7 @@ void Game::update() {
             }
 
             if (!enemiesRemain) {
-                setWave(new Wave(difficulty*sqrt(game_length), std::pow(game_length,2), false));
+                setWave(new Wave(difficulty*sqrt(game_length), std::pow(game_length,2), game_length % 4 == 0));
                 game_length++;
                 waveFinished = false; // wave started
             }
@@ -241,11 +241,19 @@ std::vector<Entity*> Game::getEntitiesInRange(sf::Vector2f pos, float radius, bo
     std::vector<Entity*> result;
 
     for (auto& entity : getEntities()) {
+        if (!entity) continue;
+
+        // Respect ally/enemy flags
+        if (onlyAllies && !entity->IsAllied()) continue;
+        if (onlyEnemies && entity->IsAllied()) continue;
+
         float dx = entity->getPosition().x - pos.x;
         float dy = entity->getPosition().y - pos.y;
         float distSq = dx*dx + dy*dy;
         float combinedRadius = radius + entity->getHitboxRadius();
-        if (distSq <= combinedRadius*combinedRadius) result.push_back(entity);
+
+        if (distSq <= combinedRadius*combinedRadius)
+            result.push_back(entity);
     }
     return result;
 }

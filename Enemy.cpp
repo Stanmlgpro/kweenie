@@ -196,9 +196,9 @@ void ZombieBoss::update(float dt) {
             {
             getPosition(),
             getTarget()->getPosition() - getPosition(),
-            4.f,
-            1000.f,
-            70.f,
+            3.5f,
+            400.f,
+            50.f,
             20.f,
             &getGame()->zombieAttackTexture,
             false,
@@ -214,4 +214,5 @@ void ZombieBoss::update(float dt) {
 
 std::vector<ProjectileData> ZombieBoss::died() {
     getGame()->addGold(100);
+    return {};
 }
