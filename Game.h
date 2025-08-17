@@ -48,6 +48,7 @@ public:
     sf::Texture arrowTexture;
     sf::Texture bigArrowTexture;
     sf::Texture fireTexture;
+    sf::Texture zombieAttackTexture;
 
     std::vector<Projectile> projectilePool;
     std::vector<AreaEffect> areaEffectPool;

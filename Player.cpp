@@ -171,7 +171,7 @@ std::vector<ProjectileData> Archer::R(sf::Vector2f mousePos) {
             200.f,     // life
             50.f,      // size
             50.f,      // damage
-            &getGame()->arrowTexture,
+            &getGame()->bigArrowTexture,
             true,
             [&](const sf::Vector2f& hitPos) {
                 getGame()->addAreaEffects( {

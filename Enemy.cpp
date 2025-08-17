@@ -119,10 +119,10 @@ void Skeleton::update(float dt) {
             {
             getPosition(),
             getTarget()->getPosition() - getPosition(),
-            3.f,       // speed
-            500.f,     // life
-            30.f,      // size
-            5.f,      // damage
+            3.f,
+            500.f,
+            30.f,
+            5.f,
             &getGame()->arrowTexture,
             false,
             nullptr
@@ -162,4 +162,56 @@ void Tombstone::update(float dt) {
 std::vector<ProjectileData> Tombstone::died() {
     getGame()->addGold(5);
     return {};
+}
+
+ZombieBoss::ZombieBoss() {
+    setPosition({300.f, 300.f});
+    setAcceleration(0.4);
+    setVelocity(0.4);
+    setTargetPosition({0.f, 0.f});
+    setHitboxRadius(300);
+    setHp(1000);
+    setCD(2);
+    setSprite("../Resources/Zombie_Boss.png");
+}
+
+void ZombieBoss::update(float dt) {
+    Enemy::update(dt);
+    if (!getTarget()) return;
+    sf::Vector2f toTarget = getTargetPosition() - getPosition();
+    float dist = std::sqrt(toTarget.x * toTarget.x + toTarget.y * toTarget.y);
+
+    if (dist < 10.f) { // close enough to target, pick a new one
+        float radius = 700;
+        float angle = static_cast<float>(rand()) / RAND_MAX * 2.f * M_PI;
+        float x = getTarget()->getPosition().x + radius * cos(angle);
+        float y = getTarget()->getPosition().y + radius * sin(angle);
+        setTargetPosition({x,y});
+    }
+
+    if (getCD_timer() <= 0) {
+        setCD_timer(getCD());
+
+        getGame()->addProjectiles ( {
+            {
+            getPosition(),
+            getTarget()->getPosition() - getPosition(),
+            4.f,
+            1000.f,
+            70.f,
+            20.f,
+            &getGame()->zombieAttackTexture,
+            false,
+                [&](const sf::Vector2f& hitPos) {
+                    auto zombie = new Zombie();
+                    zombie->setPosition(hitPos);
+                    getGame()->addEntity(zombie);
+                }
+            }
+        });
+    }
+}
+
+std::vector<ProjectileData> ZombieBoss::died() {
+    getGame()->addGold(100);
 }

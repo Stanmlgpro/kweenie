@@ -67,6 +67,7 @@ std::string Wave::chooseEnemy() {
         float chance = 0.1f; // 10% chance per spawn
         float r = static_cast<float>(rand()) / RAND_MAX;
         if (r < chance) {
+            length = 0;
             return bosses[rand() % bosses.size()];
         }
     }
@@ -89,6 +90,9 @@ void Wave::spawn() {
     }
     if (enemyType == "tombstone") {
         entity = new Tombstone();
+    }
+    if (enemyType == "zombieboss") {
+        entity = new ZombieBoss();
     }
     entity->setPosition(spawnPos);
     game->addEntity(entity);

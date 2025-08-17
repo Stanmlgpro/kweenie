@@ -42,4 +42,12 @@ public:
     void update(float dt) override;
     std::vector<ProjectileData> died() override;
 };
+
+class ZombieBoss : public Enemy {
+public:
+    ZombieBoss();
+
+    void update(float dt) override;
+    std::vector<ProjectileData> died() override;
+};
 #endif //ENEMY_H
