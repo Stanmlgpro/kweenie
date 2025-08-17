@@ -75,7 +75,8 @@ void Zombie::update(float dt) {
             75.f,
             20.f,
             &getGame()->arrowTexture,
-            false
+            false,
+            nullptr
             }
         });
     }
@@ -123,7 +124,8 @@ void Skeleton::update(float dt) {
             30.f,      // size
             5.f,      // damage
             &getGame()->arrowTexture,
-            false
+            false,
+            nullptr
             }
         });
     }

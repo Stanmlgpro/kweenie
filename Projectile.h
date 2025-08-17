@@ -9,6 +9,7 @@
 #include <iostream>
 #include <unordered_map>
 #include <cmath>
+#include <functional>
 
 class Projectile {
 private:
@@ -27,16 +28,18 @@ private:
     bool active = false;
 
     sf::Texture* texture = nullptr;
+    std::function<void(const sf::Vector2f&)> onHit;
 public:
     Projectile() = default;
 
     Projectile(sf::Vector2f startPos, sf::Vector2f direction, float spd, float life, float size, float damage, std::string texturePath);
 
-    void Activate(sf::Vector2f startPos, sf::Vector2f direction, float spd, float life, float size, float damage, sf::Texture* tex, bool isAllied);
+    void Activate(sf::Vector2f startPos, sf::Vector2f direction, float spd, float life, float size, float damage, sf::Texture* tex, bool isAllied, std::function<void(const sf::Vector2f&)> onHit);
 
     bool update(float dt);
     void setSprite(const std::string& img_path);
     void render(sf::RenderWindow* window);
+    void hit();
 
     sf::Vector2f getPosition() const { return position; }
     float getRadius() const { return radius; }

@@ -107,7 +107,8 @@ std::vector<ProjectileData> Archer::Q(sf::Vector2f mousePos) {
                 30.f,      // size
                 10.f,      // damage
                 &getGame()->arrowTexture,
-                true
+                true,
+                nullptr
             }};
     }
     return {};
@@ -136,7 +137,8 @@ std::vector<ProjectileData> Archer::W(sf::Vector2f mousePos) {
                 15.f,      // size
                 5.f,      // damage
                 &getGame()->arrowTexture,
-                true
+                true,
+                nullptr
             });
         }
         return projectiles;
@@ -170,7 +172,8 @@ std::vector<ProjectileData> Archer::R(sf::Vector2f mousePos) {
             50.f,      // size
             50.f,      // damage
             &getGame()->arrowTexture,
-            true
+            true,
+            nullptr
         }};
     }
     return {};

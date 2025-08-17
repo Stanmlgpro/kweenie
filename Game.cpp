@@ -100,6 +100,7 @@ void Game::update() {
         }
 
         if (expired) {
+            projectilePool[i].hit();
             projectilePool[i].deactivate();
         } else {
             ++i;
@@ -176,7 +177,8 @@ void Game::addProjectiles(const std::vector<ProjectileData>& projectilePool) {
             data.size,
             data.damage,
             data.tex,
-            data.isAllied
+            data.isAllied,
+            data.onHit
         );
     }
 }

@@ -18,7 +18,7 @@ Projectile::Projectile(sf::Vector2f startPos, sf::Vector2f direction, float spd,
     setSprite(texturePath);
 }
 
-void Projectile::Activate(sf::Vector2f startPos, sf::Vector2f direction, float spd, float life, float size, float damage, sf::Texture* tex, bool isAllied) {
+void Projectile::Activate(sf::Vector2f startPos, sf::Vector2f direction, float spd, float life, float size, float damage, sf::Texture* tex, bool isAllied, std::function<void(const sf::Vector2f&)> onHit) {
     this->position = startPos;
     this->speed = spd;
     this->lifetime = life;
@@ -26,6 +26,7 @@ void Projectile::Activate(sf::Vector2f startPos, sf::Vector2f direction, float s
     this->damage = damage;
     this->texture = tex;
     this->age = 0;
+    this->onHit = onHit;
 
     float length = std::sqrt(direction.x * direction.x + direction.y * direction.y);
     if (length != 0) direction /= length;
@@ -89,4 +90,8 @@ bool Projectile::update(float dt) {
     shape.setPosition(position);
 
     return age >= lifetime;
+}
+
+void Projectile::hit() {
+    if (onHit) onHit(getPosition());
 }

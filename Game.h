@@ -29,6 +29,7 @@ struct ProjectileData {
     float damage;
     sf::Texture* tex;
     bool isAllied;
+    std::function<void(const sf::Vector2f&)> onHit;
 };
 
 class Game {

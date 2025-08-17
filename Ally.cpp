@@ -67,7 +67,8 @@ void Peasant::update(float dt) {
             75.f,
             20.f,
             &getGame()->arrowTexture,
-            true
+            true,
+            nullptr
             }
         });
     }
