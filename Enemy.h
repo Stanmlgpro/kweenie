@@ -27,6 +27,14 @@ public:
     std::vector<ProjectileData> died() override;
 };
 
+class Skeleton : public Enemy {
+public:
+    Skeleton();
+
+    void update(float dt) override;
+    std::vector<ProjectileData> died() override;
+};
+
 class Tombstone : public Enemy {
 public:
     Tombstone();

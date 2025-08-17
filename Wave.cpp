@@ -84,6 +84,9 @@ void Wave::spawn() {
     if (enemyType == "zombie") {
         entity = new Zombie();
     }
+    if (enemyType == "skeleton") {
+        entity = new Skeleton();
+    }
     if (enemyType == "tombstone") {
         entity = new Tombstone();
     }

@@ -86,6 +86,54 @@ std::vector<ProjectileData> Zombie::died() {
     return {};
 }
 
+Skeleton::Skeleton() {
+    setPosition({700.f, 700.f});
+    setAcceleration(1.1);
+    setVelocity(1.1);
+    setTargetPosition({500.f, 500.f});
+    setHitboxRadius(40);
+    setHp(60);
+    setCD(1.2);
+    setSprite("../Resources/Skeleton.png");
+}
+
+void Skeleton::update(float dt) {
+    Enemy::update(dt);
+    if (!getTarget()) return;
+    sf::Vector2f toTarget = getTargetPosition() - getPosition();
+    float dist = std::sqrt(toTarget.x * toTarget.x + toTarget.y * toTarget.y);
+
+    if (dist < 10.f) { // close enough to target, pick a new one
+        float radius = 400;
+        float angle = static_cast<float>(rand()) / RAND_MAX * 2.f * M_PI;
+        float x = getTarget()->getPosition().x + radius * cos(angle);
+        float y = getTarget()->getPosition().y + radius * sin(angle);
+        setTargetPosition({x,y});
+    }
+
+    if (getCD_timer() <= 0) {
+        setCD_timer(getCD()); // reset cooldown
+
+        getGame()->addProjectiles ( {
+            {
+            getPosition(),
+            getTarget()->getPosition() - getPosition(),
+            3.f,       // speed
+            500.f,     // life
+            30.f,      // size
+            5.f,      // damage
+            &getGame()->arrowTexture,
+            false
+            }
+        });
+    }
+}
+
+std::vector<ProjectileData> Skeleton::died() {
+    getGame()->addGold(2);
+    return {};
+}
+
 Tombstone::Tombstone() {
     setPosition({300.f, 300.f});
     setAcceleration(0);

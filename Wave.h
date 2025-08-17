@@ -26,7 +26,7 @@ public:
     float calculateSpawnTime() const;
 
 private:
-    std::vector<std::string> enemies = {"zombie", "tombstone"};
+    std::vector<std::string> enemies = {"zombie", "skeleton", "tombstone"};
     std::vector<std::string> bosses = {};
     int difficulty = 0;
     float length;

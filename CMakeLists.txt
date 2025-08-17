@@ -31,6 +31,8 @@ set(SOURCE_FILES
         Ally.cpp
         Wave.h
         Wave.cpp
+        AreaEffect.h
+        AreaEffect.cpp
 )
 add_executable(project ${SOURCE_FILES})
 target_link_libraries(project sfml-graphics sfml-window sfml-system)
